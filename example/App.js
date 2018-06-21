@@ -28,7 +28,7 @@ class App extends React.Component<{}, State> {
     return (
       <Editor
         value={this.state.code}
-        onValueChange={value => this.setState({ code: value })}
+        onValueChange={code => this.setState({ code })}
         highlight={code => highlight(code, languages.jsx)}
         style={{
           width: '100%',
