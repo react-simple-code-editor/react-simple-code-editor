@@ -23,6 +23,8 @@ export default class Editor extends React.Component<Props, State> {
         html: props.highlight(props.value),
       };
     }
+
+    return null;
   }
 
   state = {

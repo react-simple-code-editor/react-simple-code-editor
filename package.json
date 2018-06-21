@@ -1,7 +1,7 @@
 {
   "name": "react-simple-code-editor",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "description": "Simple no-frills code editor with syntax highlighting",
   "keywords": [],
   "main": "src/index.js",
   "devDependencies": {
