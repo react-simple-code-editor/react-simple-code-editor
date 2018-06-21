@@ -1,0 +1,31 @@
+{
+  "name": "react-simple-code-editor",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "react-textarea-autosize": "^6.1.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "dedent": "0.7.0",
+    "eslint": "^4.19.1",
+    "eslint-config-satya164": "^1.0.2",
+    "flow-bin": "^0.74.0",
+    "prettier": "^1.13.5",
+    "prismjs": "^1.15.0",
+    "quik": "^1.0.1",
+    "react": "16.3.2",
+    "react-dom": "16.3.2"
+  },
+  "peerDependencies": {
+    "react": "16.3.2",
+    "react-dom": "16.3.2"
+  },
+  "scripts": {
+    "example": "quik --run example/App.js"
+  }
+}
