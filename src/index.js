@@ -43,7 +43,11 @@ export default class Editor extends React.Component<Props, State> {
             style={{ ...styles.editor, ...styles.textarea }}
             value={value}
             onChange={e => onValueChange(e.target.value)}
-            spellCheck="false"
+            autoCapitalize="off"
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            data-gramm={false}
           />
           <pre
             style={{ ...styles.editor, ...styles.highlight }}
