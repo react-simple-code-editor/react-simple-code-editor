@@ -23,6 +23,7 @@ type Record = {
   selectionEnd: number,
 };
 
+const KEYCODE_ENTER = 13;
 const KEYCODE_TAB = 9;
 const KEYCODE_BACKSPACE = 8;
 const KEYCODE_Z = 90;
@@ -139,13 +140,13 @@ export default class Editor extends React.Component<Props, State> {
 
   _handleKeyDown = (e: *) => {
     const { tabSize, insertSpaces } = this.props;
+    const { value, selectionStart, selectionEnd } = e.target;
+
     const tabCharacter = (insertSpaces ? ' ' : '     ').repeat(tabSize);
 
     if (e.keyCode === KEYCODE_TAB) {
       // Prevent focus change
       e.preventDefault();
-
-      const { value, selectionStart, selectionEnd } = e.target;
 
       if (selectionStart === selectionEnd) {
         const updatedSelection = selectionStart + tabCharacter.length;
@@ -184,7 +185,6 @@ export default class Editor extends React.Component<Props, State> {
         });
       }
     } else if (e.keyCode === KEYCODE_BACKSPACE) {
-      const { value, selectionStart, selectionEnd } = e.target;
       const hasSelection = selectionStart !== selectionEnd;
       const textBeforeCaret = value.substring(0, selectionStart);
 
@@ -203,6 +203,35 @@ export default class Editor extends React.Component<Props, State> {
           selectionStart: updatedSelection,
           selectionEnd: updatedSelection,
         });
+      }
+    } else if (e.keyCode === KEYCODE_ENTER) {
+      // Ignore selections
+      if (selectionStart === selectionEnd) {
+        // Get the current line
+        const line = value
+          .substring(0, selectionStart)
+          .split('\n')
+          .pop();
+        const matches = line.match(/^\s+/);
+
+        if (matches && matches[0]) {
+          e.preventDefault();
+
+          // Preserve indentation on inserting a new line
+          const indent = '\n' + matches[0];
+          const updatedSelection = selectionStart + indent.length;
+
+          this._applyEdits({
+            // Insert indentation character at caret
+            value:
+              value.substring(0, selectionStart) +
+              indent +
+              value.substring(selectionEnd),
+            // Update caret position
+            selectionStart: updatedSelection,
+            selectionEnd: updatedSelection,
+          });
+        }
       }
     } else if (
       e.keyCode === KEYCODE_Z &&
