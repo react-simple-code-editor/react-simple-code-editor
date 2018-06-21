@@ -4,9 +4,6 @@
   "description": "",
   "keywords": [],
   "main": "src/index.js",
-  "dependencies": {
-    "react-textarea-autosize": "^6.1.0"
-  },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
