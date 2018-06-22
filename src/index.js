@@ -1,4 +1,5 @@
 /* @flow */
+/* global global */
 /* eslint-disable react/no-danger, react/sort-comp */
 
 import React from 'react';
@@ -16,6 +17,7 @@ type Props = {
 type State = {
   value: string,
   html: string,
+  capture: boolean,
 };
 
 type Record = {
@@ -33,9 +35,13 @@ const KEYCODE_ENTER = 13;
 const KEYCODE_TAB = 9;
 const KEYCODE_BACKSPACE = 8;
 const KEYCODE_Z = 90;
+const KEYCODE_M = 77;
 
 const HISTORY_LIMIT = 100;
 const HISTORY_TIME_GAP = 3000;
+
+const isMacLike =
+  'navigator' in global && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
 export default class Editor extends React.Component<Props, State> {
   static defaultProps = {
@@ -58,6 +64,7 @@ export default class Editor extends React.Component<Props, State> {
   state = {
     value: this.props.value,
     html: this.props.highlight(this.props.value),
+    capture: true,
   };
 
   componentDidMount() {
@@ -302,6 +309,17 @@ export default class Editor extends React.Component<Props, State> {
       } else {
         this._undoEdit();
       }
+    } else if (
+      e.keyCode === KEYCODE_M &&
+      e.ctrlKey &&
+      (isMacLike ? e.shiftKey : true)
+    ) {
+      e.preventDefault();
+
+      // Toggle capturing tab key so users can focus away
+      this.setState(state => ({
+        capture: !state.capture,
+      }));
     }
   };
 
@@ -363,6 +381,7 @@ export default class Editor extends React.Component<Props, State> {
           data-gramm={false}
         />
         <pre
+          aria-hidden="true"
           style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
           dangerouslySetInnerHTML={{ __html: this.state.html + '<br />' }}
         />
