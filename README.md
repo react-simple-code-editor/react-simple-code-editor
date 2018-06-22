@@ -42,7 +42,7 @@ import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-jsx';
 
 const code = `export default function App() {
-  return <div>Hello world</div>
+  return <div>Hello world</div>;
 }
 `;
 
@@ -58,7 +58,7 @@ class App extends React.Component {
         style={{
           width: '100%',
           height: '100%',
-          fontFamily: '"Fira code", monospace',
+          fontFamily: '"Fira code", "Fira Mono", monospace',
           fontSize: 12,
         }}
       />

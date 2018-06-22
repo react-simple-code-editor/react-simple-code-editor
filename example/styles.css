@@ -17,7 +17,7 @@ body,
 }
 
 body {
-  font-family: 'Fira code', Consolas, Menlo, Courier, monospace;
+  font-family: 'Fira code', 'Fira Mono', Consolas, Menlo, Courier, monospace;
   font-size: 14px;
   line-height: 1.5;
   margin: 0;
@@ -34,8 +34,9 @@ body {
 }
 
 .container__content {
-  width: 420px;
+  width: 440px;
   max-width: 100%;
+  padding: 10px;
   text-align: center;
 }
 
