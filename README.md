@@ -56,7 +56,7 @@ class App extends React.Component {
       <Editor
         value={this.state.code}
         onValueChange={code => this.setState({ code })}
-        highlight={code => highlight(code, languages.jsx)}
+        highlight={code => highlight(code, languages.js)}
         padding={10}
         style={{
           fontFamily: '"Fira code", "Fira Mono", monospace',
