@@ -327,6 +327,7 @@ export default class Editor extends React.Component<Props, State> {
           e.metaKey && e.keyCode === KEYCODE_Z
         : // Trigger undo with Ctrl+Z on other platforms
           e.ctrlKey && e.keyCode === KEYCODE_Z) &&
+      !e.shiftKey &&
       !e.altKey
     ) {
       e.preventDefault();
@@ -340,7 +341,7 @@ export default class Editor extends React.Component<Props, State> {
           ? // Trigger redo with Ctrl+Y on Windows
             e.ctrlKey && e.keyCode === KEYCODE_Y
           : // Trigger redo with Ctrl+Shift+Z on other platforms
-            e.metaKey && e.keyCode === KEYCODE_Z && e.shiftKey) &&
+            e.ctrlKey && e.keyCode === KEYCODE_Z && e.shiftKey) &&
       !e.altKey
     ) {
       e.preventDefault();
