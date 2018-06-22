@@ -7,7 +7,7 @@ html {
   box-sizing: inherit;
 }
 
-html, body, #root {
+html, body {
   height: 100%;
   width: 100%;
 }

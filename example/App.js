@@ -50,4 +50,4 @@ class App extends React.Component<{}, State> {
 }
 
 /* $FlowFixMe */
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />, document.body);
