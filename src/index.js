@@ -9,6 +9,7 @@ type Props = {
   highlight: (value: string) => string,
   tabSize: number,
   insertSpaces: boolean,
+  padding: number,
   style?: {},
 };
 
@@ -40,6 +41,7 @@ export default class Editor extends React.Component<Props, State> {
   static defaultProps = {
     tabSize: 2,
     insertSpaces: true,
+    padding: 0,
   };
 
   static getDerivedStateFromProps(props: Props, state: State) {
@@ -329,6 +331,7 @@ export default class Editor extends React.Component<Props, State> {
     const {
       value,
       style,
+      padding,
       /* eslint-disable no-unused-vars */
       onValueChange,
       highlight,
@@ -338,26 +341,31 @@ export default class Editor extends React.Component<Props, State> {
       ...rest
     } = this.props;
 
+    const contentStyle = {
+      paddingTop: padding,
+      paddingRight: padding,
+      paddingBottom: padding,
+      paddingLeft: padding,
+    };
+
     return (
       <div {...rest} style={{ ...styles.container, ...style }}>
-        <div style={styles.content}>
-          <textarea
-            ref={c => (this._input = c)}
-            onKeyDown={this._handleKeyDown}
-            style={{ ...styles.editor, ...styles.textarea }}
-            value={value}
-            onChange={this._handleChange}
-            autoCapitalize="off"
-            autoComplete="off"
-            autoCorrect="off"
-            spellCheck={false}
-            data-gramm={false}
-          />
-          <pre
-            style={{ ...styles.editor, ...styles.highlight }}
-            dangerouslySetInnerHTML={{ __html: this.state.html + '<br />' }}
-          />
-        </div>
+        <textarea
+          ref={c => (this._input = c)}
+          onKeyDown={this._handleKeyDown}
+          style={{ ...styles.editor, ...styles.textarea, ...contentStyle }}
+          value={value}
+          onChange={this._handleChange}
+          autoCapitalize="off"
+          autoComplete="off"
+          autoCorrect="off"
+          spellCheck={false}
+          data-gramm={false}
+        />
+        <pre
+          style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
+          dangerouslySetInnerHTML={{ __html: this.state.html + '<br />' }}
+        />
       </div>
     );
   }
@@ -365,13 +373,11 @@ export default class Editor extends React.Component<Props, State> {
 
 const styles = {
   container: {
-    overflow: 'auto',
-  },
-  content: {
     position: 'relative',
+    textAlign: 'left',
     whiteSpace: 'pre-wrap',
-    minHeight: '100%',
     overflow: 'hidden',
+    padding: 0,
   },
   textarea: {
     position: 'absolute',
@@ -380,10 +386,9 @@ const styles = {
     height: '100%',
     width: '100%',
     margin: 0,
-    padding: 0,
-    border: 0,
     outline: 0,
     resize: 'none',
+    background: 'none',
     overflow: 'hidden',
     MozOsxFontSmoothing: 'grayscale',
     WebkitFontSmoothing: 'antialiased',
@@ -392,7 +397,6 @@ const styles = {
   highlight: {
     position: 'relative',
     margin: 0,
-    padding: 0,
     pointerEvents: 'none',
   },
   editor: {
@@ -409,14 +413,10 @@ const styles = {
     textTransform: 'inherit',
     textIndent: 'inherit',
     whiteSpace: 'inherit',
-    paddingTop: 'inherit',
-    paddingRight: 'inherit',
-    paddingBottom: 'inherit',
-    paddingLeft: 'inherit',
+    boxSizing: 'inherit',
     borderTopWidth: 'inherit',
     borderRightWidth: 'inherit',
     borderBottomWidth: 'inherit',
     borderLeftWidth: 'inherit',
-    boxSizing: 'inherit',
   },
 };
