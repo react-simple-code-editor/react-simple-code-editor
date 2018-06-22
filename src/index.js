@@ -378,12 +378,12 @@ const styles = {
   },
   highlight: {
     position: 'relative',
-    display: 'block',
     margin: 0,
     padding: 0,
     pointerEvents: 'none',
   },
   editor: {
+    display: 'inherit',
     letterSpacing: 'inherit',
     lineHeight: 'inherit',
     fontFamily: 'inherit',

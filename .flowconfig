@@ -5,7 +5,14 @@
 [libs]
 
 [lints]
+all=warn
 
 [options]
 
 [strict]
+nonstrict-import
+unclear-type
+untyped-import
+untyped-type-import
+unsafe-getters-setters
+sketchy-null

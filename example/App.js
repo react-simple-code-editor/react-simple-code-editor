@@ -18,9 +18,16 @@ type State = {
 class App extends React.Component<{}, State> {
   state = {
     code: dedent`
-    export default function App() {
-      return <div>Hello world</div>
+    import React from "react";
+    import ReactDOM from "react-dom";
+
+    function App() {
+      return (
+        <h1>Hello world</h1>
+      );
     }
+
+    ReactDOM.render(<App />, document.getElementById("root"));
     `,
   };
 
@@ -33,8 +40,7 @@ class App extends React.Component<{}, State> {
         style={{
           width: '100%',
           height: '100%',
-          fontFamily:
-            '"Fira code", Consolas, "Liberation Mono", Menlo, Courier, monospace',
+          fontFamily: '"Fira code", Consolas, Menlo, Courier, monospace',
           fontSize: 12,
           fontVariantLigatures: 'common-ligatures',
         }}

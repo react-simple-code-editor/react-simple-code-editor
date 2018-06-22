@@ -2,8 +2,29 @@
   "name": "react-simple-code-editor",
   "version": "0.1.0",
   "description": "Simple no-frills code editor with syntax highlighting",
-  "keywords": [],
-  "main": "src/index.js",
+  "keywords": [
+    "code",
+    "editor",
+    "react"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "flow": "flow",
+    "build": "babel src --out-dir lib --ignore '**/__tests__/**'",
+    "prepare": "yarn build",
+    "example": "quik --run example/App.js",
+    "precommit": "yarn lint && yarn flow"
+  },
+  "main": "lib/index.js",
+  "files": [
+    "lib/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/satya164/react-simple-code-editor.git"
+  },
+  "author": "Satyajit Sahoo <satyajit.happy@gmail.com> (https://github.com/satya164/)",
+  "license": "MIT",
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
@@ -12,6 +33,7 @@
     "eslint": "^4.19.1",
     "eslint-config-satya164": "^1.0.2",
     "flow-bin": "^0.74.0",
+    "husky": "^0.14.3",
     "prettier": "^1.13.5",
     "prismjs": "^1.15.0",
     "quik": "^1.0.1",
@@ -21,8 +43,5 @@
   "peerDependencies": {
     "react": "16.3.2",
     "react-dom": "16.3.2"
-  },
-  "scripts": {
-    "example": "quik --run example/App.js"
   }
 }
