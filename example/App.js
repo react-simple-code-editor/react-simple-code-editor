@@ -33,21 +33,28 @@ class App extends React.Component<{}, State> {
 
   render() {
     return (
-      <Editor
-        value={this.state.code}
-        onValueChange={code => this.setState({ code })}
-        highlight={code => highlight(code, languages.jsx)}
-        style={{
-          width: '100%',
-          height: '100%',
-          fontFamily: '"Fira code", Consolas, Menlo, Courier, monospace',
-          fontSize: 12,
-          fontVariantLigatures: 'common-ligatures',
-        }}
-      />
+      <main className="container">
+        <div className="container__content">
+          <h1>react-simple-code-editor</h1>
+          <p>A simple no-frills code editor with syntax highlighting.</p>
+          <a
+            className="button"
+            href="https://github.com/satya164/react-simple-code-editor"
+          >
+            GitHub
+          </a>
+          <Editor
+            value={this.state.code}
+            onValueChange={code => this.setState({ code })}
+            highlight={code => highlight(code, languages.jsx)}
+            padding={10}
+            className="container__editor"
+          />
+        </div>
+      </main>
     );
   }
 }
 
 /* $FlowFixMe */
-ReactDOM.render(<App />, document.body);
+ReactDOM.render(<App />, document.getElementById('root'));
