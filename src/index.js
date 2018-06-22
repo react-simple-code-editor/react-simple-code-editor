@@ -149,6 +149,19 @@ export default class Editor extends React.Component<Props, State> {
   };
 
   _applyEdits = (record: Record) => {
+    // Save last selection state
+    const input = this._input;
+    const last = this._history.stack[this._history.offset];
+
+    if (last && input) {
+      this._history.stack[this._history.offset] = {
+        ...last,
+        selectionStart: input.selectionStart,
+        selectionEnd: input.selectionEnd,
+      };
+    }
+
+    // Save the changes
     this._recordChange(record);
     this._updateInput(record);
   };
