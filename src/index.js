@@ -23,12 +23,18 @@ type Record = {
   selectionEnd: number,
 };
 
+type History = {
+  stack: Array<Record & { timestamp: number }>,
+  offset: number,
+};
+
 const KEYCODE_ENTER = 13;
 const KEYCODE_TAB = 9;
 const KEYCODE_BACKSPACE = 8;
 const KEYCODE_Z = 90;
 
 const HISTORY_LIMIT = 100;
+const HISTORY_TIME_GAP = 3000;
 
 export default class Editor extends React.Component<Props, State> {
   static defaultProps = {
@@ -71,7 +77,7 @@ export default class Editor extends React.Component<Props, State> {
     });
   };
 
-  _recordChange = (record: Record) => {
+  _recordChange = (record: Record, overwrite?: boolean = false) => {
     const { stack, offset } = this._history;
 
     if (stack.length && offset > -1) {
@@ -89,8 +95,43 @@ export default class Editor extends React.Component<Props, State> {
       }
     }
 
+    const timestamp = Date.now();
+
+    if (overwrite) {
+      const last = this._history.stack[this._history.offset];
+
+      if (last && timestamp - last.timestamp < HISTORY_TIME_GAP) {
+        // A previous entry exists and was in short interval
+
+        // Match the last word in the line
+        const re = /[^a-z0-9]([a-z0-9]+)$/i;
+
+        // Get the previous line
+        const previous = last.value
+          .substring(0, last.selectionStart)
+          .split('\n')
+          .pop()
+          .match(re);
+
+        // Get the current line
+        const current = record.value
+          .substring(0, record.selectionStart)
+          .split('\n')
+          .pop()
+          .match(re);
+
+        if (previous && current && current[1].startsWith(previous[1])) {
+          // The last word of the previous line and current line match
+          // Overwrite previous entry so that undo will remove whole word
+          this._history.stack[this._history.offset] = { ...record, timestamp };
+
+          return;
+        }
+      }
+    }
+
     // Add the new operation to the stack
-    this._history.stack.push(record);
+    this._history.stack.push({ ...record, timestamp });
     this._history.offset++;
   };
 
@@ -252,16 +293,19 @@ export default class Editor extends React.Component<Props, State> {
   _handleChange = (e: *) => {
     const { value, selectionStart, selectionEnd } = e.target;
 
-    this._recordChange({
-      value,
-      selectionStart,
-      selectionEnd,
-    });
+    this._recordChange(
+      {
+        value,
+        selectionStart,
+        selectionEnd,
+      },
+      true
+    );
 
     this.props.onValueChange(value);
   };
 
-  _history = {
+  _history: History = {
     stack: [],
     offset: -1,
   };
