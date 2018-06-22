@@ -34,12 +34,14 @@ type History = {
 const KEYCODE_ENTER = 13;
 const KEYCODE_TAB = 9;
 const KEYCODE_BACKSPACE = 8;
+const KEYCODE_Y = 89;
 const KEYCODE_Z = 90;
 const KEYCODE_M = 77;
 
 const HISTORY_LIMIT = 100;
 const HISTORY_TIME_GAP = 3000;
 
+const isWindows = 'navigator' in global && /Win/i.test(navigator.platform);
 const isMacLike =
   'navigator' in global && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
@@ -320,18 +322,30 @@ export default class Editor extends React.Component<Props, State> {
         }
       }
     } else if (
-      e.keyCode === KEYCODE_Z &&
-      e.metaKey !== e.ctrlKey &&
+      (isMacLike
+        ? // Trigger undo with ⌘+Z on Mac
+          e.metaKey && e.keyCode === KEYCODE_Z
+        : // Trigger undo with Ctrl+Z on other platforms
+          e.ctrlKey && e.keyCode === KEYCODE_Z) &&
       !e.altKey
     ) {
       e.preventDefault();
 
-      // Undo / Redo
-      if (e.shiftKey) {
-        this._redoEdit();
-      } else {
-        this._undoEdit();
-      }
+      this._undoEdit();
+    } else if (
+      (isMacLike
+        ? // Trigger redo with ⌘+Shift+Z on Mac
+          e.metaKey && e.keyCode === KEYCODE_Z && e.shiftKey
+        : isWindows
+          ? // Trigger redo with Ctrl+Y on Windows
+            e.ctrlKey && e.keyCode === KEYCODE_Y
+          : // Trigger redo with Ctrl+Shift+Z on other platforms
+            e.metaKey && e.keyCode === KEYCODE_Z && e.shiftKey) &&
+      !e.altKey
+    ) {
+      e.preventDefault();
+
+      this._redoEdit();
     } else if (
       e.keyCode === KEYCODE_M &&
       e.ctrlKey &&
