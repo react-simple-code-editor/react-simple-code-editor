@@ -1,6 +1,6 @@
 {
   "name": "react-simple-code-editor",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Simple no-frills code editor with syntax highlighting",
   "keywords": [
     "code",
@@ -10,7 +10,8 @@
   "scripts": {
     "lint": "eslint .",
     "flow": "flow",
-    "build": "babel src --out-dir lib --ignore '**/__tests__/**'",
+    "build": "babel src --out-dir lib --ignore '**/__tests__/**' && flow-copy-source -i '**/__tests__/**' src lib",
+    "prebuild": "del lib/",
     "prepare": "yarn build",
     "example": "parcel example/index.html",
     "gh-pages": "git branch -D gh-pages; git checkout -b gh-pages && rm -rf dist/ && parcel build example/App.js && git add -f dist/ && git commit -m 'Publish website' && git push -fu origin gh-pages; git checkout master",
@@ -33,9 +34,11 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "dedent": "^0.7.0",
+    "del-cli": "^1.1.0",
     "eslint": "^4.19.1",
     "eslint-config-satya164": "^1.0.2",
     "flow-bin": "^0.75.0",
+    "flow-copy-source": "^2.0.0",
     "husky": "^0.14.3",
     "parcel-bundler": "^1.9.2",
     "prettier": "^1.13.5",
