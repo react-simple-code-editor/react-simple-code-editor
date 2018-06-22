@@ -1,5 +1,4 @@
-react-simple-code-editor
-========================
+# react-simple-code-editor
 
 Simple no-frills code editor with syntax highlighting.
 
@@ -7,7 +6,7 @@ Simple no-frills code editor with syntax highlighting.
 
 ## Why
 
-Several browser based code editors such as Ace, CodeMirror, Monaco etc. provide the ability to embed a full-featured code editor in your web page. However, if you just need a simple editor with syntax highlighting without any of the extra features, they can be overkill as they don't usually have a small bundle size footprint. This library aims to provide a simple code editor with syntax highlighting support without any of the extra features.
+Several browser based code editors such as Ace, CodeMirror, Monaco etc. provide the ability to embed a full-featured code editor in your web page. However, if you just need a simple editor with syntax highlighting without any of the extra features, they can be overkill as they don't usually have a small bundle size footprint. This library aims to provide a simple code editor with syntax highlighting support without any of the extra features, perfect for simple embeds and forms where users can submit code.
 
 ## Features
 
@@ -55,9 +54,8 @@ class App extends React.Component {
         value={this.state.code}
         onValueChange={code => this.setState({ code })}
         highlight={code => highlight(code, languages.jsx)}
+        padding={10}
         style={{
-          width: '100%',
-          height: '100%',
           fontFamily: '"Fira code", "Fira Mono", monospace',
           fontSize: 12,
         }}
