@@ -86,6 +86,9 @@ export default class Editor extends React.Component<Props, State> {
     });
   };
 
+  _getLines = (text: string, position: number) =>
+    text.substring(0, position).split('\n');
+
   _recordChange = (record: Record, overwrite?: boolean = false) => {
     const { stack, offset } = this._history;
 
@@ -116,16 +119,12 @@ export default class Editor extends React.Component<Props, State> {
         const re = /[^a-z0-9]([a-z0-9]+)$/i;
 
         // Get the previous line
-        const previous = last.value
-          .substring(0, last.selectionStart)
-          .split('\n')
+        const previous = this._getLines(last.value, last.selectionStart)
           .pop()
           .match(re);
 
         // Get the current line
-        const current = record.value
-          .substring(0, record.selectionStart)
-          .split('\n')
+        const current = this._getLines(record.value, record.selectionStart)
           .pop()
           .match(re);
 
@@ -207,28 +206,42 @@ export default class Editor extends React.Component<Props, State> {
 
     const tabCharacter = (insertSpaces ? ' ' : '     ').repeat(tabSize);
 
-    if (e.keyCode === KEYCODE_TAB) {
+    if (e.keyCode === KEYCODE_TAB && this.state.capture) {
       // Prevent focus change
       e.preventDefault();
 
-      if (selectionStart === selectionEnd) {
-        const updatedSelection = selectionStart + tabCharacter.length;
+      if (e.shiftKey) {
+        // Unindent selected lines
+        const startLine = this._getLines(value, selectionStart).length - 1;
+        const endLine = this._getLines(value, selectionEnd).length - 1;
+        const nextValue = value
+          .split('\n')
+          .map((line, i) => {
+            if (
+              i >= startLine &&
+              i <= endLine &&
+              line.startsWith(tabCharacter)
+            ) {
+              return line.substring(tabCharacter.length);
+            }
 
-        this._applyEdits({
-          // Insert tab character at caret
-          value:
-            value.substring(0, selectionStart) +
-            tabCharacter +
-            value.substring(selectionEnd),
-          // Update caret position
-          selectionStart: updatedSelection,
-          selectionEnd: updatedSelection,
-        });
-      } else {
+            return line;
+          })
+          .join('\n');
+
+        if (value !== nextValue) {
+          this._applyEdits({
+            value: nextValue,
+            // Update caret position
+            selectionStart: selectionStart - tabCharacter.length,
+            selectionEnd:
+              selectionEnd - tabCharacter.length * (endLine - startLine + 1),
+          });
+        }
+      } else if (selectionStart !== selectionEnd) {
         // Indent selected lines
-        const startLine =
-          value.substring(0, selectionStart).split('\n').length - 1;
-        const endLine = value.substring(0, selectionEnd).split('\n').length - 1;
+        const startLine = this._getLines(value, selectionStart).length - 1;
+        const endLine = this._getLines(value, selectionEnd).length - 1;
 
         this._applyEdits({
           value: value
@@ -245,6 +258,19 @@ export default class Editor extends React.Component<Props, State> {
           selectionStart: selectionStart + tabCharacter.length,
           selectionEnd:
             selectionEnd + tabCharacter.length * (endLine - startLine + 1),
+        });
+      } else {
+        const updatedSelection = selectionStart + tabCharacter.length;
+
+        this._applyEdits({
+          // Insert tab character at caret
+          value:
+            value.substring(0, selectionStart) +
+            tabCharacter +
+            value.substring(selectionEnd),
+          // Update caret position
+          selectionStart: updatedSelection,
+          selectionEnd: updatedSelection,
         });
       }
     } else if (e.keyCode === KEYCODE_BACKSPACE) {
@@ -271,10 +297,7 @@ export default class Editor extends React.Component<Props, State> {
       // Ignore selections
       if (selectionStart === selectionEnd) {
         // Get the current line
-        const line = value
-          .substring(0, selectionStart)
-          .split('\n')
-          .pop();
+        const line = this._getLines(value, selectionStart).pop();
         const matches = line.match(/^\s+/);
 
         if (matches && matches[0]) {
