@@ -37,11 +37,9 @@ import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-markup';
-import 'prismjs/components/prism-jsx';
 
-const code = `export default function App() {
-  return <div>Hello world</div>;
+const code = `function add(a, b) {
+  return a + b;
 }
 `;
 
