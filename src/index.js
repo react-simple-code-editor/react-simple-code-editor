@@ -214,7 +214,8 @@ export default class Editor extends React.Component<Props, State> {
 
       if (e.shiftKey) {
         // Unindent selected lines
-        const startLine = this._getLines(value, selectionStart).length - 1;
+        const linesBeforeCaret = this._getLines(value, selectionStart);
+        const startLine = linesBeforeCaret.length - 1;
         const endLine = this._getLines(value, selectionEnd).length - 1;
         const nextValue = value
           .split('\n')
@@ -232,12 +233,17 @@ export default class Editor extends React.Component<Props, State> {
           .join('\n');
 
         if (value !== nextValue) {
+          const startLineText = linesBeforeCaret[startLine];
+
           this._applyEdits({
             value: nextValue,
-            // Update caret position
-            selectionStart: selectionStart - tabCharacter.length,
-            selectionEnd:
-              selectionEnd - tabCharacter.length * (endLine - startLine + 1),
+            // Move the start cursor if first line in selection was modified
+            // It was modified only if it started with a tab
+            selectionStart: startLineText.startsWith(tabCharacter)
+              ? selectionStart - tabCharacter.length
+              : selectionStart,
+            // Move the end cursor by total number of characters removed
+            selectionEnd: selectionEnd - (value.length - nextValue.length),
           });
         }
       } else if (selectionStart !== selectionEnd) {
@@ -256,8 +262,9 @@ export default class Editor extends React.Component<Props, State> {
               return line;
             })
             .join('\n'),
-          // Update caret position
+          // Move the start cursor by number of characters added in first line of selection
           selectionStart: selectionStart + tabCharacter.length,
+          // Move the end cursor by total number of characters added
           selectionEnd:
             selectionEnd + tabCharacter.length * (endLine - startLine + 1),
         });
