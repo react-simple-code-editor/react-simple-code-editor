@@ -89,9 +89,12 @@ The syntax highlighting can be done by any third party library as long as it ret
 
 The vanilla `<textarea>` doesn't support inserting tab characters for indentation, so we re-implement it by listening to `keydown` events and programmatically updating the text. One caveat with programmatically updating the text is that we lose the undo stack, so we need to maintain our own undo stack. As a result, we can also implement improved undo behaviour such as undoing whole words similar to editors like VSCode.
 
-## Known issues
+## Limitations
 
-Using the undo/redo option from browser's context menu can mess things up.
+Due to the way it works, it has certain limitations:
+
+- The syntax highlighted code cannot have different font family, font weight, font style, line height etc. for its content. Since the editor works by aligning the highlighted code over a `<textarea>`, changing anything that affects the layout can misalign it.
+- The custom undo stack is incompatible with undo/redo items browser's context menu. However, other full featured editors don't support browser's undo/redo menu items either.
 
 ## Contributing
 
