@@ -3,6 +3,7 @@
 /* eslint-disable react/no-danger, react/sort-comp */
 
 import React from 'react';
+import clippySvg from './clippy.svg';
 
 type Props = {
   value: string,
@@ -67,6 +68,7 @@ export default class Editor extends React.Component<Props, State> {
     value: this.props.value,
     html: this.props.highlight(this.props.value),
     capture: true,
+    displayClippy: false,
   };
 
   componentDidMount() {
@@ -383,6 +385,27 @@ export default class Editor extends React.Component<Props, State> {
     this.props.onValueChange(value);
   };
 
+  _onMouseLeave = (e: *) => {
+    e.preventDefault();
+    this.setState(() => ({
+      displayClippy: false,
+    }));
+  };
+
+  _onMouseEnter = (e: *) => {
+    e.preventDefault();
+    this.setState(() => ({
+      displayClippy: true,
+    }));
+  };
+
+  _copy = (text: string) => {
+    if (navigator.clipboard) {
+      return navigator.clipboard.writeText(text);
+    }
+    return document.execCommand('copy');
+  };
+
   _history: History = {
     stack: [],
     offset: -1,
@@ -411,8 +434,17 @@ export default class Editor extends React.Component<Props, State> {
       paddingLeft: padding,
     };
 
+    const _displayClippyImg = {
+      display: this.state.displayClippy ? 'block' : 'none',
+    };
+
     return (
-      <div {...rest} style={{ ...styles.container, ...style }}>
+      <div
+        {...rest}
+        style={{ ...styles.container, ...style }}
+        onMouseLeave={this._onMouseLeave}
+        onMouseEnter={this._onMouseEnter}
+      >
         <textarea
           ref={c => (this._input = c)}
           onKeyDown={this._handleKeyDown}
@@ -425,6 +457,13 @@ export default class Editor extends React.Component<Props, State> {
           spellCheck={false}
           data-gramm={false}
         />
+        <div onClick={() => this._copy(value)}>
+          <img
+            src={clippySvg}
+            style={{ ...styles.clippy, ..._displayClippyImg }}
+            alt="Copy to clipboard"
+          />
+        </div>
         <pre
           aria-hidden="true"
           style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
@@ -480,5 +519,13 @@ const styles = {
     textRendering: 'inherit',
     textTransform: 'inherit',
     whiteSpace: 'inherit',
+  },
+  clippy: {
+    margin: '2px',
+    position: 'relative',
+    top: '3px',
+    width: '14px',
+    display: 'block',
+    float: 'right',
   },
 };
