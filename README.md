@@ -76,6 +76,7 @@ class App extends React.Component {
 - `tabSize` (`number`): Optional prop to control the tab size. For example, for 4 space indentation, `tabSize` will be `4` and `insertSpaces` will be `true`. Default: `2`.
 - `insertSpaces` (`boolean`): Optional prop to control whether to use spaces for indentation. Default: `true`.
 - `padding` (`number`): Optional padding for code. Default: `0`.
+- `readOnly` (`boolean`): Optional read only property for code. Default: `false`.
 
 ## Demo
 

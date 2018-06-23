@@ -17,6 +17,7 @@ require('prismjs/components/prism-jsx');
 
 type State = {
   code: string,
+  readonly: boolean,
 };
 
 class App extends React.Component<{}, State> {
@@ -33,6 +34,7 @@ class App extends React.Component<{}, State> {
 
     ReactDOM.render(<App />, document.getElementById("root"));
     `,
+    readonly: true,
   };
 
   render() {
@@ -53,6 +55,7 @@ class App extends React.Component<{}, State> {
             highlight={code => highlight(code, languages.jsx)}
             padding={10}
             className="container__editor"
+            readOnly={this.state.readonly}
           />
         </div>
       </main>
