@@ -12,7 +12,7 @@ type Props = {
   insertSpaces: boolean,
   padding: number,
   style?: {},
-  readOnly?: boolean
+  readOnly?: boolean,
 };
 
 type State = {
@@ -51,7 +51,7 @@ export default class Editor extends React.Component<Props, State> {
     tabSize: 2,
     insertSpaces: true,
     padding: 0,
-    readOnly: false
+    readOnly: false,
   };
 
   static getDerivedStateFromProps(props: Props, state: State) {
