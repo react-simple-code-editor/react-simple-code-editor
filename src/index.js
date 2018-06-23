@@ -12,6 +12,7 @@ type Props = {
   insertSpaces: boolean,
   padding: number,
   style?: {},
+  readOnly?: boolean
 };
 
 type State = {
@@ -50,6 +51,7 @@ export default class Editor extends React.Component<Props, State> {
     tabSize: 2,
     insertSpaces: true,
     padding: 0,
+    readOnly: false
   };
 
   static getDerivedStateFromProps(props: Props, state: State) {
@@ -67,6 +69,7 @@ export default class Editor extends React.Component<Props, State> {
     value: this.props.value,
     html: this.props.highlight(this.props.value),
     capture: true,
+    readOnly: this.props.readOnly,
   };
 
   componentDidMount() {
@@ -395,6 +398,7 @@ export default class Editor extends React.Component<Props, State> {
       value,
       style,
       padding,
+      readOnly,
       /* eslint-disable no-unused-vars */
       onValueChange,
       highlight,
@@ -424,6 +428,7 @@ export default class Editor extends React.Component<Props, State> {
           autoCorrect="off"
           spellCheck={false}
           data-gramm={false}
+          readOnly={readOnly}
         />
         <pre
           aria-hidden="true"
