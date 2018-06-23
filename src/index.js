@@ -248,8 +248,10 @@ export default class Editor extends React.Component<Props, State> {
         }
       } else if (selectionStart !== selectionEnd) {
         // Indent selected lines
-        const startLine = this._getLines(value, selectionStart).length - 1;
+        const linesBeforeCaret = this._getLines(value, selectionStart);
+        const startLine = linesBeforeCaret.length - 1;
         const endLine = this._getLines(value, selectionEnd).length - 1;
+        const startLineText = linesBeforeCaret[startLine];
 
         this._applyEdits({
           value: value
@@ -263,7 +265,10 @@ export default class Editor extends React.Component<Props, State> {
             })
             .join('\n'),
           // Move the start cursor by number of characters added in first line of selection
-          selectionStart: selectionStart + tabCharacter.length,
+          // Don't move it if it there was no text before cursor
+          selectionStart: /\S/.test(startLineText)
+            ? selectionStart + tabCharacter.length
+            : selectionStart,
           // Move the end cursor by total number of characters added
           selectionEnd:
             selectionEnd + tabCharacter.length * (endLine - startLine + 1),
