@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "eslint .",
     "flow": "flow",
-    "build": "babel src --out-dir lib --ignore '**/__tests__/**' && flow-copy-source -i '**/__tests__/**' src lib",
+    "build": "babel src --out-dir lib --ignore '**/__tests__/**' --source-maps && flow-copy-source -i '**/__tests__/**' src lib",
     "prebuild": "del lib/",
     "prepare": "yarn build",
     "example": "parcel example/index.html",
