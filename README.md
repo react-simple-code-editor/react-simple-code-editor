@@ -15,10 +15,11 @@ Several browser based code editors such as Ace, CodeMirror, Monaco etc. provide 
 
 ## Features
 
-- Syntax highlighting with third party library
-- Tab key support with cutomizable indentation
+- Modular syntax highlighting with third party library
+- Indent line or selected text by pressing tab key, with customizable indentation
 - Automatic indent on new lines
 - Undo whole words instead of letter by letter
+- Accessible, use Ctrl+Shift+M (Mac) / Ctrl+M to toggle capturing tab key
 
 ## Installation
 
