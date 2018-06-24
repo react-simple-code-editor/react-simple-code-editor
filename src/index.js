@@ -1,6 +1,6 @@
 /* @flow */
 /* global global */
-/* eslint-disable react/no-danger, react/sort-comp */
+/* eslint-disable react/no-danger */
 
 import React from 'react';
 
@@ -15,8 +15,6 @@ type Props = {
 };
 
 type State = {
-  value: string,
-  html: string,
   capture: boolean,
 };
 
@@ -52,20 +50,7 @@ export default class Editor extends React.Component<Props, State> {
     padding: 0,
   };
 
-  static getDerivedStateFromProps(props: Props, state: State) {
-    if (props.value !== state.value) {
-      return {
-        value: props.value,
-        html: props.highlight(props.value),
-      };
-    }
-
-    return null;
-  }
-
   state = {
-    value: this.props.value,
-    html: this.props.highlight(this.props.value),
     capture: true,
   };
 
@@ -400,9 +385,9 @@ export default class Editor extends React.Component<Props, State> {
       value,
       style,
       padding,
+      highlight,
       /* eslint-disable no-unused-vars */
       onValueChange,
-      highlight,
       tabSize,
       insertSpaces,
       /* eslint-enable no-unused-vars */
@@ -433,7 +418,7 @@ export default class Editor extends React.Component<Props, State> {
         <pre
           aria-hidden="true"
           style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
-          dangerouslySetInnerHTML={{ __html: this.state.html + '<br />' }}
+          dangerouslySetInnerHTML={{ __html: highlight(value) + '<br />' }}
         />
       </div>
     );
