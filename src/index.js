@@ -10,7 +10,7 @@ type Props = {
   highlight: (value: string) => string,
   tabSize: number,
   insertSpaces: boolean,
-  padding: number,
+  padding: number | string,
   style?: {},
 };
 
