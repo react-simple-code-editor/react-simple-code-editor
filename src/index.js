@@ -433,7 +433,6 @@ const styles = {
     position: 'relative',
     textAlign: 'left',
     whiteSpace: 'pre-wrap',
-    overflow: 'hidden',
     padding: 0,
   },
   textarea: {
