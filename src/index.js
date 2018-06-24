@@ -445,6 +445,7 @@ const styles = {
     resize: 'none',
     background: 'none',
     overflow: 'hidden',
+    color: 'inherit',
     MozOsxFontSmoothing: 'grayscale',
     WebkitFontSmoothing: 'antialiased',
     WebkitTextFillColor: 'transparent',
