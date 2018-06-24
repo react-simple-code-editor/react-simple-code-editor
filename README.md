@@ -19,7 +19,7 @@ Several browser based code editors such as Ace, CodeMirror, Monaco etc. provide 
 - Indent line or selected text by pressing tab key, with customizable indentation
 - Automatic indent on new lines
 - Undo whole words instead of letter by letter
-- Accessible, use Ctrl+Shift+M (Mac) / Ctrl+M to toggle capturing tab key
+- Accessible, use `Ctrl+Shift+M` (Mac) / `Ctrl+M` to toggle capturing tab key
 
 ## Installation
 
@@ -71,11 +71,12 @@ class App extends React.Component {
 
 ## Props
 
-- `value` (`string`): Current value of the editor. Pass the code to display as a prop.
+- `value` (`string`): Current value of the editor i.e. the code to display.
 - `onValueChange` (`string => mixed`): Callback which is called when the value of the editor changes. You'll need to [update the value prop](https://reactjs.org/docs/forms.html#controlled-components) when this is called.
 - `highlight` (`string => string`): Callback which will receive text to highlight. You'll need to return HTML with syntax highlighting using a library such as [`prismjs`](https://prismjs.com).
-- `tabSize` (`number`): Optional prop to control the tab size. For example, for 4 space indentation, `tabSize` will be `4` and `insertSpaces` will be `true`. Default: `2`.
-- `insertSpaces` (`boolean`): Optional prop to control whether to use spaces for indentation. Default: `true`.
+- `tabSize` (`number`): The number of characters to insert when pressing tab key. For example, for 4 space indentation, `tabSize` will be `4` and `insertSpaces` will be `true`. Default: `2`.
+- `insertSpaces` (`boolean`): Whether to use spaces for indentation. Default: `true`.
+- `ignoreTabKey` (`boolean`): Whether the editor should ignore tab key presses so that keyboard users can tab past the editor. Users can toggle this behaviour using `Ctrl+Shift+M` (Mac) / `Ctrl+M` manually when this is `false`. Default: `false`.
 - `padding` (`number`): Optional padding for code. Default: `0`.
 
 ## Demo

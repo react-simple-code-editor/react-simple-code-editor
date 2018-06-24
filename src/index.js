@@ -10,6 +10,7 @@ type Props = {
   highlight: (value: string) => string,
   tabSize: number,
   insertSpaces: boolean,
+  ignoreTabKey: boolean,
   padding: number | string,
   style?: {},
 };
@@ -47,6 +48,7 @@ export default class Editor extends React.Component<Props, State> {
   static defaultProps = {
     tabSize: 2,
     insertSpaces: true,
+    ignoreTabKey: false,
     padding: 0,
   };
 
@@ -188,12 +190,12 @@ export default class Editor extends React.Component<Props, State> {
   };
 
   _handleKeyDown = (e: *) => {
-    const { tabSize, insertSpaces } = this.props;
+    const { tabSize, insertSpaces, ignoreTabKey } = this.props;
     const { value, selectionStart, selectionEnd } = e.target;
 
     const tabCharacter = (insertSpaces ? ' ' : '     ').repeat(tabSize);
 
-    if (e.keyCode === KEYCODE_TAB && this.state.capture) {
+    if (e.keyCode === KEYCODE_TAB && !ignoreTabKey && this.state.capture) {
       // Prevent focus change
       e.preventDefault();
 
@@ -390,6 +392,7 @@ export default class Editor extends React.Component<Props, State> {
       onValueChange,
       tabSize,
       insertSpaces,
+      ignoreTabKey,
       /* eslint-enable no-unused-vars */
       ...rest
     } = this.props;
