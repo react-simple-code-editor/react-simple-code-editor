@@ -442,7 +442,6 @@ const styles = {
     height: '100%',
     width: '100%',
     margin: 0,
-    outline: 0,
     border: 0,
     resize: 'none',
     background: 'none',

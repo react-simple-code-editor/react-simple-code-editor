@@ -48,6 +48,10 @@ body {
   margin: 1.67em 0;
 }
 
+.container__editor textarea {
+  outline: 0;
+}
+
 .button {
   display: inline-block;
   padding: 0 6px;
