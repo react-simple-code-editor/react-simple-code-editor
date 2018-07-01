@@ -47,13 +47,15 @@ class App extends React.Component<{}, State> {
           >
             GitHub
           </a>
-          <Editor
-            value={this.state.code}
-            onValueChange={code => this.setState({ code })}
-            highlight={code => highlight(code, languages.jsx)}
-            padding={10}
-            className="container__editor"
-          />
+          <div className="container_editor_area">
+            <Editor
+              value={this.state.code}
+              onValueChange={code => this.setState({ code })}
+              highlight={code => highlight(code, languages.jsx)}
+              padding={10}
+              className="container__editor"
+            />
+          </div>
         </div>
       </main>
     );

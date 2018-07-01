@@ -40,12 +40,17 @@ body {
   text-align: center;
 }
 
+.container_editor_area {
+  max-height: 400px;
+  overflow: auto;
+  margin: 1.67em 0;
+}
+
 .container__editor {
   font-size: 12px;
-  font-variant-ligatures: 'common-ligatures';
+  font-variant-ligatures: common-ligatures;
   background-color: #fafafa;
   border-radius: 3px;
-  margin: 1.67em 0;
 }
 
 .container__editor textarea {
