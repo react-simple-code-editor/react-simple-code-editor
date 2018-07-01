@@ -2,9 +2,10 @@
 /* global global */
 /* eslint-disable react/no-danger */
 
-import React from 'react';
+import * as React from 'react';
 
 type Props = {
+  // Props for the component
   value: string,
   onValueChange: (value: string) => mixed,
   highlight: (value: string) => string,
@@ -13,6 +14,18 @@ type Props = {
   ignoreTabKey: boolean,
   padding: number | string,
   style?: {},
+
+  // Props for the textarea
+  autoFocus?: boolean,
+  disabled?: boolean,
+  form?: string,
+  maxLength?: number,
+  minLength?: number,
+  name?: string,
+  readOnly?: boolean,
+  required?: boolean,
+  onFocus?: (e: FocusEvent) => mixed,
+  onBlur?: (e: FocusEvent) => mixed,
 };
 
 type State = {
@@ -388,6 +401,16 @@ export default class Editor extends React.Component<Props, State> {
       style,
       padding,
       highlight,
+      autoFocus,
+      disabled,
+      form,
+      maxLength,
+      minLength,
+      name,
+      readOnly,
+      required,
+      onFocus,
+      onBlur,
       /* eslint-disable no-unused-vars */
       onValueChange,
       tabSize,
@@ -408,10 +431,20 @@ export default class Editor extends React.Component<Props, State> {
       <div {...rest} style={{ ...styles.container, ...style }}>
         <textarea
           ref={c => (this._input = c)}
-          onKeyDown={this._handleKeyDown}
           style={{ ...styles.editor, ...styles.textarea, ...contentStyle }}
           value={value}
           onChange={this._handleChange}
+          onKeyDown={this._handleKeyDown}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          disabled={disabled}
+          form={form}
+          maxLength={maxLength}
+          minLength={minLength}
+          name={name}
+          readOnly={readOnly}
+          required={required}
+          autoFocus={autoFocus}
           autoCapitalize="off"
           autoComplete="off"
           autoCorrect="off"
