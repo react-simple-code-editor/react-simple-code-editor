@@ -44,6 +44,7 @@ body {
   max-height: 400px;
   overflow: auto;
   margin: 1.67em 0;
+  padding-left: 3em;
 }
 
 .container__editor {
@@ -51,6 +52,18 @@ body {
   font-variant-ligatures: common-ligatures;
   background-color: #fafafa;
   border-radius: 3px;
+  counter-reset: line;
+}
+
+.container_editor_line_number:before {
+  position: absolute;
+  right: 100%;
+  margin-right: 10px;
+  text-align: right;
+  opacity: .3;
+  user-select: none;
+  counter-increment: line;
+  content: counter(line);
 }
 
 .container__editor textarea {

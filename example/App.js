@@ -51,7 +51,15 @@ class App extends React.Component<{}, State> {
             <Editor
               value={this.state.code}
               onValueChange={code => this.setState({ code })}
-              highlight={code => highlight(code, languages.jsx)}
+              highlight={code =>
+                highlight(code, languages.jsx)
+                  .split('\n')
+                  .map(
+                    line =>
+                      `<span class="container_editor_line_number">${line}</span>`
+                  )
+                  .join('\n')
+              }
               padding={10}
               className="container__editor"
             />
