@@ -49,6 +49,9 @@ const KEYCODE_BACKSPACE = 8;
 const KEYCODE_Y = 89;
 const KEYCODE_Z = 90;
 const KEYCODE_M = 77;
+const KEYCODE_PARENS = 57;
+const KEYCODE_BRACKETS = 219;
+const KEYCODE_QUOTE = 222;
 
 const HISTORY_LIMIT = 100;
 const HISTORY_TIME_GAP = 3000;
@@ -332,6 +335,45 @@ export default class Editor extends React.Component<Props, State> {
             selectionEnd: updatedSelection,
           });
         }
+      }
+    } else if (
+      e.keyCode === KEYCODE_PARENS ||
+      e.keyCode === KEYCODE_BRACKETS ||
+      e.keyCode === KEYCODE_QUOTE
+    ) {
+      let chars;
+
+      if (e.keyCode === KEYCODE_PARENS && e.shiftKey) {
+        chars = ['(', ')'];
+      } else if (e.keyCode === KEYCODE_BRACKETS) {
+        if (e.shiftKey) {
+          chars = ['{', '}'];
+        } else {
+          chars = ['[', ']'];
+        }
+      } else if (e.keyCode === KEYCODE_QUOTE) {
+        if (e.shiftKey) {
+          chars = ['"', '"'];
+        } else {
+          chars = ["'", "'"];
+        }
+      }
+
+      // If text is selected, wrap them in the characters
+      if (selectionStart !== selectionEnd && chars) {
+        e.preventDefault();
+
+        this._applyEdits({
+          value:
+            value.substring(0, selectionStart) +
+            chars[0] +
+            value.substring(selectionStart, selectionEnd) +
+            chars[1] +
+            value.substring(selectionEnd),
+          // Update caret position
+          selectionStart,
+          selectionEnd: selectionEnd + 2,
+        });
       }
     } else if (
       (isMacLike
