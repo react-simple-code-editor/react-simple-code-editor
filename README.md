@@ -69,6 +69,8 @@ class App extends React.Component {
 }
 ```
 
+Note that depending on your syntax highlighter, you might have to include additional CSS for syntax highlighting to work.
+
 ## Props
 
 - `value` (`string`): Current value of the editor i.e. the code to display.
