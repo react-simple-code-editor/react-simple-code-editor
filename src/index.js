@@ -395,6 +395,16 @@ export default class Editor extends React.Component<Props, State> {
 
   _input: ?HTMLTextAreaElement;
 
+  get session() {
+    return {
+      history: this._history,
+    };
+  }
+
+  set session(session: { history: History }) {
+    this._history = session.history;
+  }
+
   render() {
     const {
       value,
