@@ -52,6 +52,7 @@ const KEYCODE_M = 77;
 const KEYCODE_PARENS = 57;
 const KEYCODE_BRACKETS = 219;
 const KEYCODE_QUOTE = 222;
+const KEYCODE_BACK_QUOTE = 192;
 
 const HISTORY_LIMIT = 100;
 const HISTORY_TIME_GAP = 3000;
@@ -339,7 +340,8 @@ export default class Editor extends React.Component<Props, State> {
     } else if (
       e.keyCode === KEYCODE_PARENS ||
       e.keyCode === KEYCODE_BRACKETS ||
-      e.keyCode === KEYCODE_QUOTE
+      e.keyCode === KEYCODE_QUOTE ||
+      e.keyCode === KEYCODE_BACK_QUOTE
     ) {
       let chars;
 
@@ -357,6 +359,8 @@ export default class Editor extends React.Component<Props, State> {
         } else {
           chars = ["'", "'"];
         }
+      } else if (e.keyCode === KEYCODE_BACK_QUOTE && !e.shiftKey) {
+        chars = ['`', '`'];
       }
 
       // If text is selected, wrap them in the characters
