@@ -74,9 +74,9 @@ Note that depending on your syntax highlighter, you might have to include additi
 
 ## Props
 
-- `value` (`string`): Current value of the editor i.e. the code to display.
-- `onValueChange` (`string => mixed`): Callback which is called when the value of the editor changes. You'll need to [update the value prop](https://reactjs.org/docs/forms.html#controlled-components) when this is called.
-- `highlight` (`string => string`): Callback which will receive text to highlight. You'll need to return HTML with syntax highlighting using a library such as [`prismjs`](https://prismjs.com).
+- `value` (`string`): Current value of the editor i.e. the code to display. This must be a [controlled prop](https://reactjs.org/docs/forms.html#controlled-components).
+- `onValueChange` (`string => mixed`): Callback which is called when the value of the editor changes. You'll need to update the value prop when this is called.
+- `highlight` (`string => string | React.Node`): Callback which will receive text to highlight. You'll need to return an HTML string or a React element with syntax highlighting using a library such as [`prismjs`](https://prismjs.com).
 - `tabSize` (`number`): The number of characters to insert when pressing tab key. For example, for 4 space indentation, `tabSize` will be `4` and `insertSpaces` will be `true`. Default: `2`.
 - `insertSpaces` (`boolean`): Whether to use spaces for indentation. Default: `true`.
 - `ignoreTabKey` (`boolean`): Whether the editor should ignore tab key presses so that keyboard users can tab past the editor. Users can toggle this behaviour using `Ctrl+Shift+M` (Mac) / `Ctrl+M` manually when this is `false`. Default: `false`.

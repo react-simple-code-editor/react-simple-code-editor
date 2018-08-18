@@ -1,6 +1,5 @@
 /* @flow */
 /* global global */
-/* eslint-disable react/no-danger */
 
 import * as React from 'react';
 
@@ -8,7 +7,7 @@ type Props = {
   // Props for the component
   value: string,
   onValueChange: (value: string) => mixed,
-  highlight: (value: string) => string,
+  highlight: (value: string) => string | React.Node,
   tabSize: number,
   insertSpaces: boolean,
   ignoreTabKey: boolean,
@@ -483,6 +482,8 @@ export default class Editor extends React.Component<Props, State> {
       paddingLeft: padding,
     };
 
+    const highlighted = highlight(value);
+
     return (
       <div {...rest} style={{ ...styles.container, ...style }}>
         <textarea
@@ -510,7 +511,9 @@ export default class Editor extends React.Component<Props, State> {
         <pre
           aria-hidden="true"
           style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
-          dangerouslySetInnerHTML={{ __html: highlight(value) + '<br />' }}
+          {...(typeof highlighted === 'string'
+            ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
+            : { children: highlighted })}
         />
       </div>
     );
