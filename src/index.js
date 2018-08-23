@@ -542,6 +542,7 @@ const styles = {
     MozOsxFontSmoothing: 'grayscale',
     WebkitFontSmoothing: 'antialiased',
     WebkitTextFillColor: 'transparent',
+    boxSizing: 'border-box',
   },
   highlight: {
     position: 'relative',
