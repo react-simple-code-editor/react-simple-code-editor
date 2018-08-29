@@ -101,6 +101,7 @@ Due to the way it works, it has certain limitations:
 - The syntax highlighted code cannot have different font family, font weight, font style, line height etc. for its content. Since the editor works by aligning the highlighted code over a `<textarea>`, changing anything that affects the layout can misalign it.
 - The custom undo stack is incompatible with undo/redo items browser's context menu. However, other full featured editors don't support browser's undo/redo menu items either.
 - The editor is not optimized for performance and large documents can affect the typing speed.
+- We hide text in the textarea using `-webkit-text-fill-color: transparent`, which works in all modern browsers (even non-webkit ones such as Firefox and Edge). On IE, we use `color: transparent` which doesn't hide the cursor. Text may appear bolder in unsupported browsers.
 
 ## Contributing
 

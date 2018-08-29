@@ -29,6 +29,7 @@ type Props = {
 
 type State = {
   capture: boolean,
+  ie: boolean,
 };
 
 type Record = {
@@ -70,9 +71,16 @@ export default class Editor extends React.Component<Props, State> {
 
   state = {
     capture: true,
+    ie: false,
   };
 
   componentDidMount() {
+    if (/Trident/.test(navigator.userAgent)) {
+      // The browser is Internet Explorer
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({ ie: true });
+    }
+
     this._recordCurrentState();
   }
 
@@ -488,7 +496,14 @@ export default class Editor extends React.Component<Props, State> {
       <div {...rest} style={{ ...styles.container, ...style }}>
         <textarea
           ref={c => (this._input = c)}
-          style={{ ...styles.editor, ...styles.textarea, ...contentStyle }}
+          style={{
+            ...styles.editor,
+            ...styles.textarea,
+            ...contentStyle,
+            // IE doesn't support `-webkit-text-fill-color`
+            // Setting `color: transparent` is fine on IE because it doesn't affect caret color
+            ...(this.state.ie ? { color: 'transparent' } : null),
+          }}
           value={value}
           onChange={this._handleChange}
           onKeyDown={this._handleKeyDown}
@@ -525,6 +540,7 @@ const styles = {
     position: 'relative',
     textAlign: 'left',
     whiteSpace: 'pre-wrap',
+    boxSizing: 'border-box',
     padding: 0,
   },
   textarea: {
@@ -542,7 +558,6 @@ const styles = {
     MozOsxFontSmoothing: 'grayscale',
     WebkitFontSmoothing: 'antialiased',
     WebkitTextFillColor: 'transparent',
-    boxSizing: 'border-box',
   },
   highlight: {
     position: 'relative',
