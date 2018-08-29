@@ -540,6 +540,7 @@ const styles = {
     position: 'relative',
     textAlign: 'left',
     whiteSpace: 'pre-wrap',
+    wordBreak: 'keep-all',
     boxSizing: 'border-box',
     padding: 0,
   },
@@ -580,5 +581,6 @@ const styles = {
     textRendering: 'inherit',
     textTransform: 'inherit',
     whiteSpace: 'inherit',
+    wordBreak: 'inherit',
   },
 };
