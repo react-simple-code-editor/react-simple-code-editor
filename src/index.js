@@ -61,6 +61,8 @@ const isWindows = 'navigator' in global && /Win/i.test(navigator.platform);
 const isMacLike =
   'navigator' in global && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
+const className = 'npm__react-simple-code-editor__textarea';
+
 export default class Editor extends React.Component<Props, State> {
   static defaultProps = {
     tabSize: 2,
@@ -500,10 +502,8 @@ export default class Editor extends React.Component<Props, State> {
             ...styles.editor,
             ...styles.textarea,
             ...contentStyle,
-            // IE doesn't support `-webkit-text-fill-color`
-            // Setting `color: transparent` is fine on IE because it doesn't affect caret color
-            ...(this.state.ie ? { color: 'transparent' } : null),
           }}
+          className={className}
           value={value}
           onChange={this._handleChange}
           onKeyDown={this._handleKeyDown}
@@ -530,6 +530,25 @@ export default class Editor extends React.Component<Props, State> {
             ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
             : { children: highlighted })}
         />
+        {this.state.ie ? (
+          <style type="text/css">
+            {/* CSS */ `
+            /**
+             * IE doesn't support '-webkit-text-fill-color'
+             * So we use 'color: transparent' to make the text transparent on IE
+             * Unlike other browsers, it doesn't affect caret color in IE
+             */
+            .${className} {
+              color: transparent !important;
+            }
+
+            .${className}::selection {
+              background-color: #accef7 !important;
+              color: transparent !important;
+            }
+            `}
+          </style>
+        ) : null}
       </div>
     );
   }
