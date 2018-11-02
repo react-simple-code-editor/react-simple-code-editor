@@ -74,6 +74,8 @@ Note that depending on your syntax highlighter, you might have to include additi
 
 ## Props
 
+The editor accepts all the props accepted by `textarea`. In addition, you can pass the following props:
+
 - `value` (`string`): Current value of the editor i.e. the code to display. This must be a [controlled prop](https://reactjs.org/docs/forms.html#controlled-components).
 - `onValueChange` (`string => mixed`): Callback which is called when the value of the editor changes. You'll need to update the value prop when this is called.
 - `highlight` (`string => string | React.Node`): Callback which will receive text to highlight. You'll need to return an HTML string or a React element with syntax highlighting using a library such as [`prismjs`](https://prismjs.com).
@@ -81,6 +83,7 @@ Note that depending on your syntax highlighter, you might have to include additi
 - `insertSpaces` (`boolean`): Whether to use spaces for indentation. Default: `true`.
 - `ignoreTabKey` (`boolean`): Whether the editor should ignore tab key presses so that keyboard users can tab past the editor. Users can toggle this behaviour using `Ctrl+Shift+M` (Mac) / `Ctrl+M` manually when this is `false`. Default: `false`.
 - `padding` (`number`): Optional padding for code. Default: `0`.
+- `children` (`(props, styles) => React.Node`): Optional render callback to provide a custom implementation for the editor. Receives some props to pass to the `textarea` and styles to apply to the `textarea` and the `pre` element. See [`src/index.js`](src/index.js) for the default implementation.
 
 ## Demo
 

@@ -3,8 +3,39 @@
 
 import * as React from 'react';
 
-type Props = {
-  // Props for the component
+type Styles = {|
+  container: Object,
+  common: Object,
+  textarea: Object,
+  highlight: Object,
+|};
+
+type TextAreaProps = {|
+  autoFocus?: boolean,
+  disabled?: boolean,
+  form?: string,
+  maxLength?: number,
+  minLength?: number,
+  name?: string,
+  placeholder?: string,
+  readOnly?: boolean,
+  required?: boolean,
+  onFocus?: (e: FocusEvent) => mixed,
+  onBlur?: (e: FocusEvent) => mixed,
+|};
+
+type RenderProps = {|
+  ref: any,
+  onChange: (e: any) => void,
+  onKeyDown: (e: any) => void,
+  autoCapitalize: string,
+  autoComplete: string,
+  autoCorrect: string,
+  spellCheck: boolean,
+  'data-gramm': boolean,
+|};
+
+type EditorProps = {|
   value: string,
   onValueChange: (value: string) => mixed,
   highlight: (value: string) => string | React.Node,
@@ -12,19 +43,13 @@ type Props = {
   insertSpaces: boolean,
   ignoreTabKey: boolean,
   padding: number | string,
-  style?: {},
+  style?: Object,
+|};
 
-  // Props for the textarea
-  autoFocus?: boolean,
-  disabled?: boolean,
-  form?: string,
-  maxLength?: number,
-  minLength?: number,
-  name?: string,
-  readOnly?: boolean,
-  required?: boolean,
-  onFocus?: (e: FocusEvent) => mixed,
-  onBlur?: (e: FocusEvent) => mixed,
+type Props = {
+  ...EditorProps,
+  ...TextAreaProps,
+  children?: (props: RenderProps, style: Styles) => React.Node,
 };
 
 type State = {
@@ -62,6 +87,29 @@ const isMacLike =
   'navigator' in global && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
 const className = 'npm__react-simple-code-editor__textarea';
+
+const cssText = /* CSS */ `
+/**
+ * Reset the text fill color so that placeholder is visible
+ */
+.${className}:empty {
+  -webkit-text-fill-color: inherit !important;
+}
+
+/**
+ * IE doesn't support '-webkit-text-fill-color'
+ * So we use 'color: transparent' to make the text transparent on IE
+ * Unlike other browsers, it doesn't affect caret color in IE
+ */
+.${className}-ie {
+  color: transparent !important;
+}
+
+.${className}-ie::selection {
+  background-color: #accef7 !important;
+  color: transparent !important;
+}
+`;
 
 export default class Editor extends React.Component<Props, State> {
   static defaultProps = {
@@ -215,7 +263,7 @@ export default class Editor extends React.Component<Props, State> {
     }
   };
 
-  _handleKeyDown = (e: *) => {
+  _handleKeyDown = (e: any) => {
     const { tabSize, insertSpaces, ignoreTabKey } = this.props;
     const { value, selectionStart, selectionEnd } = e.target;
 
@@ -428,7 +476,7 @@ export default class Editor extends React.Component<Props, State> {
     }
   };
 
-  _handleChange = (e: *) => {
+  _handleChange = (e: any) => {
     const { value, selectionStart, selectionEnd } = e.target;
 
     this._recordChange(
@@ -462,94 +510,99 @@ export default class Editor extends React.Component<Props, State> {
 
   render() {
     const {
-      value,
-      style,
-      padding,
-      highlight,
-      autoFocus,
-      disabled,
-      form,
-      maxLength,
-      minLength,
-      name,
-      readOnly,
-      required,
-      onFocus,
-      onBlur,
-      /* eslint-disable no-unused-vars */
-      onValueChange,
-      tabSize,
-      insertSpaces,
-      ignoreTabKey,
-      /* eslint-enable no-unused-vars */
-      ...rest
+      children = (props, styles) => {
+        const {
+          value,
+          style,
+          padding,
+          highlight,
+          autoFocus,
+          disabled,
+          form,
+          maxLength,
+          minLength,
+          name,
+          placeholder,
+          readOnly,
+          required,
+          onFocus,
+          onBlur,
+          /* eslint-disable no-unused-vars */
+          onValueChange,
+          tabSize,
+          insertSpaces,
+          ignoreTabKey,
+          /* eslint-enable no-unused-vars */
+          ...rest
+        } = this.props;
+
+        const contentStyle = {
+          paddingTop: padding,
+          paddingRight: padding,
+          paddingBottom: padding,
+          paddingLeft: padding,
+        };
+
+        const highlighted = highlight(value);
+
+        return (
+          <div {...rest} style={{ ...styles.container, ...style }}>
+            <textarea
+              style={{
+                ...styles.common,
+                ...styles.textarea,
+                ...contentStyle,
+              }}
+              className={`${className} ${
+                this.state.ie ? `${className}-ie` : ''
+              }`}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              disabled={disabled}
+              form={form}
+              maxLength={maxLength}
+              minLength={minLength}
+              name={name}
+              placeholder={placeholder}
+              readOnly={readOnly}
+              required={required}
+              autoFocus={autoFocus}
+              value={value}
+              {...props}
+            />
+            <pre
+              aria-hidden="true"
+              style={{
+                ...styles.common,
+                ...styles.highlight,
+                ...contentStyle,
+              }}
+              {...(typeof highlighted === 'string'
+                ? {
+                    dangerouslySetInnerHTML: {
+                      __html: highlighted + '<br />',
+                    },
+                  }
+                : { children: highlighted })}
+            />
+            <style type="text/css">{cssText}</style>
+          </div>
+        );
+      },
     } = this.props;
 
-    const contentStyle = {
-      paddingTop: padding,
-      paddingRight: padding,
-      paddingBottom: padding,
-      paddingLeft: padding,
-    };
-
-    const highlighted = highlight(value);
-
-    return (
-      <div {...rest} style={{ ...styles.container, ...style }}>
-        <textarea
-          ref={c => (this._input = c)}
-          style={{
-            ...styles.editor,
-            ...styles.textarea,
-            ...contentStyle,
-          }}
-          className={className}
-          value={value}
-          onChange={this._handleChange}
-          onKeyDown={this._handleKeyDown}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          disabled={disabled}
-          form={form}
-          maxLength={maxLength}
-          minLength={minLength}
-          name={name}
-          readOnly={readOnly}
-          required={required}
-          autoFocus={autoFocus}
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-          spellCheck={false}
-          data-gramm={false}
-        />
-        <pre
-          aria-hidden="true"
-          style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
-          {...(typeof highlighted === 'string'
-            ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
-            : { children: highlighted })}
-        />
-        {this.state.ie ? (
-          <style type="text/css">
-            {/* CSS */ `
-            /**
-             * IE doesn't support '-webkit-text-fill-color'
-             * So we use 'color: transparent' to make the text transparent on IE
-             * Unlike other browsers, it doesn't affect caret color in IE
-             */
-            .${className} {
-              color: transparent !important;
-            }
-
-            .${className}::selection {
-              background-color: #accef7 !important;
-              color: transparent !important;
-            }
-            `}
-          </style>
-        ) : null}
-      </div>
+    return children(
+      {
+        ref: c => (this._input = c),
+        onChange: this._handleChange,
+        onKeyDown: this._handleKeyDown,
+        autoCapitalize: 'off',
+        autoComplete: 'off',
+        autoCorrect: 'off',
+        spellCheck: false,
+        'data-gramm': false,
+      },
+      styles
     );
   }
 }
@@ -562,6 +615,23 @@ const styles = {
     wordBreak: 'keep-all',
     boxSizing: 'border-box',
     padding: 0,
+  },
+  common: {
+    boxSizing: 'inherit',
+    display: 'inherit',
+    fontFamily: 'inherit',
+    fontSize: 'inherit',
+    fontStyle: 'inherit',
+    fontVariantLigatures: 'inherit',
+    fontWeight: 'inherit',
+    letterSpacing: 'inherit',
+    lineHeight: 'inherit',
+    tabSize: 'inherit',
+    textIndent: 'inherit',
+    textRendering: 'inherit',
+    textTransform: 'inherit',
+    whiteSpace: 'inherit',
+    wordBreak: 'inherit',
   },
   textarea: {
     position: 'absolute',
@@ -584,22 +654,5 @@ const styles = {
     margin: 0,
     border: 0,
     pointerEvents: 'none',
-  },
-  editor: {
-    boxSizing: 'inherit',
-    display: 'inherit',
-    fontFamily: 'inherit',
-    fontSize: 'inherit',
-    fontStyle: 'inherit',
-    fontVariantLigatures: 'inherit',
-    fontWeight: 'inherit',
-    letterSpacing: 'inherit',
-    lineHeight: 'inherit',
-    tabSize: 'inherit',
-    textIndent: 'inherit',
-    textRendering: 'inherit',
-    textTransform: 'inherit',
-    whiteSpace: 'inherit',
-    wordBreak: 'inherit',
   },
 };
