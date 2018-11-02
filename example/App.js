@@ -49,6 +49,7 @@ class App extends React.Component<{}, State> {
           </a>
           <div className="container_editor_area">
             <Editor
+              placeholder="Type some code…"
               value={this.state.code}
               onValueChange={code => this.setState({ code })}
               highlight={code => highlight(code, languages.jsx)}

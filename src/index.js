@@ -21,6 +21,7 @@ type Props = {
   maxLength?: number,
   minLength?: number,
   name?: string,
+  placeholder?: string,
   readOnly?: boolean,
   required?: boolean,
   onFocus?: (e: FocusEvent) => mixed,
@@ -62,6 +63,29 @@ const isMacLike =
   'navigator' in global && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
 const className = 'npm__react-simple-code-editor__textarea';
+
+const cssText = /* CSS */ `
+/**
+ * Reset the text fill color so that placeholder is visible
+ */
+.${className}:empty {
+  -webkit-text-fill-color: inherit !important;
+}
+
+/**
+ * IE doesn't support '-webkit-text-fill-color'
+ * So we use 'color: transparent' to make the text transparent on IE
+ * Unlike other browsers, it doesn't affect caret color in IE
+ */
+.${className}-ie {
+  color: transparent !important;
+}
+
+.${className}-ie::selection {
+  background-color: #accef7 !important;
+  color: transparent !important;
+}
+`;
 
 export default class Editor extends React.Component<Props, State> {
   static defaultProps = {
@@ -472,6 +496,7 @@ export default class Editor extends React.Component<Props, State> {
       maxLength,
       minLength,
       name,
+      placeholder,
       readOnly,
       required,
       onFocus,
@@ -503,7 +528,7 @@ export default class Editor extends React.Component<Props, State> {
             ...styles.textarea,
             ...contentStyle,
           }}
-          className={className}
+          className={`${className} ${this.state.ie ? `${className}-ie` : ''}`}
           value={value}
           onChange={this._handleChange}
           onKeyDown={this._handleKeyDown}
@@ -514,6 +539,7 @@ export default class Editor extends React.Component<Props, State> {
           maxLength={maxLength}
           minLength={minLength}
           name={name}
+          placeholder={placeholder}
           readOnly={readOnly}
           required={required}
           autoFocus={autoFocus}
@@ -530,25 +556,7 @@ export default class Editor extends React.Component<Props, State> {
             ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
             : { children: highlighted })}
         />
-        {this.state.ie ? (
-          <style type="text/css">
-            {/* CSS */ `
-            /**
-             * IE doesn't support '-webkit-text-fill-color'
-             * So we use 'color: transparent' to make the text transparent on IE
-             * Unlike other browsers, it doesn't affect caret color in IE
-             */
-            .${className} {
-              color: transparent !important;
-            }
-
-            .${className}::selection {
-              background-color: #accef7 !important;
-              color: transparent !important;
-            }
-            `}
-          </style>
-        ) : null}
+        <style type="text/css">{cssText}</style>
       </div>
     );
   }
