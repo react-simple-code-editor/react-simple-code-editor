@@ -15,6 +15,7 @@ type Props = React.ElementConfig<'div'> & {
   style?: {},
 
   // Props for the textarea
+  textareaId?: string,
   autoFocus?: boolean,
   disabled?: boolean,
   form?: string,
@@ -502,6 +503,7 @@ export default class Editor extends React.Component<Props, State> {
       style,
       padding,
       highlight,
+      textareaId,
       autoFocus,
       disabled,
       form,
@@ -544,6 +546,7 @@ export default class Editor extends React.Component<Props, State> {
             ...contentStyle,
           }}
           className={`${className} ${this.state.ie ? `${className}-ie` : ''}`}
+          id={textareaId}
           value={value}
           onChange={this._handleChange}
           onKeyDown={this._handleKeyDown}
