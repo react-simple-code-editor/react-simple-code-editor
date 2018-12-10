@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 
-type Props = {
+type Props = React.ElementConfig<'div'> & {
   // Props for the component
   value: string,
   onValueChange: (value: string) => mixed,

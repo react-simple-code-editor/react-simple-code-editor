@@ -26,8 +26,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "main": "lib/index.js",
+  "types": "index.d.ts",
   "files": [
-    "lib/"
+    "lib/",
+    "index.d.ts"
   ],
   "repository": {
     "type": "git",
