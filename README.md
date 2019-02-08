@@ -78,6 +78,7 @@ The editor accepts all the props accepted by `textarea`. In addition, you can pa
 
 - `value` (`string`): Current value of the editor i.e. the code to display. This must be a [controlled prop](https://reactjs.org/docs/forms.html#controlled-components).
 - `onValueChange` (`string => mixed`): Callback which is called when the value of the editor changes. You'll need to update the value prop when this is called.
+- `onSelectionChange` (`(selectionStart: number, selectionEnd: number) => mixed`): Callback which is called when the cursor position or selection of the editor changes.
 - `highlight` (`string => string | React.Node`): Callback which will receive text to highlight. You'll need to return an HTML string or a React element with syntax highlighting using a library such as [`prismjs`](https://prismjs.com).
 - `tabSize` (`number`): The number of characters to insert when pressing tab key. For example, for 4 space indentation, `tabSize` will be `4` and `insertSpaces` will be `true`. Default: `2`.
 - `insertSpaces` (`boolean`): Whether to use spaces for indentation. Default: `true`.

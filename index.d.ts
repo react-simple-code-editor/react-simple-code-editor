@@ -9,6 +9,7 @@ declare module 'react-simple-code-editor' {
       // Props for the component
       value: string;
       onValueChange: (value: string) => unknown;
+      onSelectionChange?: (selectionStart: number, selectionEnd: number) => unknown;
       highlight: (value: string) => string | React.ReactNode;
       tabSize?: number;
       insertSpaces?: boolean;

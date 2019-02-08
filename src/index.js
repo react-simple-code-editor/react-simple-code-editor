@@ -7,6 +7,7 @@ type Props = React.ElementConfig<'div'> & {
   // Props for the component
   value: string,
   onValueChange: (value: string) => mixed,
+  onSelectionChange?: (selectionStart: number, selectionEnd: number) => mixed,
   highlight: (value: string) => string | React.Node,
   tabSize: number,
   insertSpaces: boolean,
@@ -239,7 +240,14 @@ export default class Editor extends React.Component<Props, State> {
     }
   };
 
-  _handleKeyDown = (e: *) => {
+  _onSelectionChange = (e: any) => {
+    if (this.props.onSelectionChange) {
+      const { selectionStart, selectionEnd } = e.target;
+      this.props.onSelectionChange(selectionStart, selectionEnd);
+    }
+  };
+
+  _handleKeyDown = (e: any) => {
     const { tabSize, insertSpaces, ignoreTabKey } = this.props;
     const { value, selectionStart, selectionEnd } = e.target;
 
@@ -503,6 +511,7 @@ export default class Editor extends React.Component<Props, State> {
       onBlur,
       /* eslint-disable no-unused-vars */
       onValueChange,
+      onSelectionChange,
       tabSize,
       insertSpaces,
       ignoreTabKey,
@@ -532,6 +541,8 @@ export default class Editor extends React.Component<Props, State> {
           value={value}
           onChange={this._handleChange}
           onKeyDown={this._handleKeyDown}
+          onKeyUp={this._onSelectionChange}
+          onClick={this._onSelectionChange}
           onFocus={onFocus}
           onBlur={onBlur}
           disabled={disabled}
