@@ -26,6 +26,7 @@ type Props = React.ElementConfig<'div'> & {
   required?: boolean,
   onFocus?: (e: FocusEvent) => mixed,
   onBlur?: (e: FocusEvent) => mixed,
+  onKeyDown?: (e: KeyboardEvent) => mixed,
 };
 
 type State = {
@@ -240,10 +241,15 @@ export default class Editor extends React.Component<Props, State> {
   };
 
   _handleKeyDown = (e: *) => {
-    const { tabSize, insertSpaces, ignoreTabKey } = this.props;
+    const { tabSize, insertSpaces, ignoreTabKey, onKeyDown } = this.props;
     const { value, selectionStart, selectionEnd } = e.target;
 
     const tabCharacter = (insertSpaces ? ' ' : '     ').repeat(tabSize);
+
+    if (onKeyDown) {
+      onKeyDown(e);
+      if (e.defaultPrevented) return;
+    }
 
     if (e.keyCode === KEYCODE_TAB && !ignoreTabKey && this.state.capture) {
       // Prevent focus change

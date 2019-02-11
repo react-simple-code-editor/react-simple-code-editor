@@ -55,6 +55,10 @@ class App extends React.Component<{}, State> {
               highlight={code => highlight(code, languages.jsx)}
               padding={10}
               className="container__editor"
+              onKeyDown={e => {
+                // override: prevent custom things on Cmd+Enter
+                if (e.metaKey && e.key === 'Enter') e.preventDefault();
+              }}
             />
           </div>
         </div>
