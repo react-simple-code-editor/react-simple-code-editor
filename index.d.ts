@@ -8,15 +8,16 @@ declare module 'react-simple-code-editor' {
     > & {
       // Props for the component
       value: string;
-      onValueChange: (value: string) => unknown;
+      onValueChange: (value: string) => void;
       highlight: (value: string) => string | React.ReactNode;
       tabSize?: number;
       insertSpaces?: boolean;
       ignoreTabKey?: boolean;
       padding?: number | string;
-      style?: object;
+      style?: React.CSSProperties;
 
       // Props for the textarea
+      textareaId?: string,
       autoFocus?: boolean;
       disabled?: boolean;
       form?: string;
@@ -26,8 +27,11 @@ declare module 'react-simple-code-editor' {
       placeholder?: string;
       readOnly?: boolean;
       required?: boolean;
-      onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => unknown;
-      onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => unknown;
+      onClick?: (e: React.MouseEvent<HTMLTextAreaElement>) => void;
+      onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
+      onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
+      onKeyUp?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+      onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
     }
   > {
     session: {
