@@ -24,8 +24,10 @@ type Props = React.ElementConfig<'div'> & {
   placeholder?: string,
   readOnly?: boolean,
   required?: boolean,
+  onClick?: (e: MouseEvent) => mixed,
   onFocus?: (e: FocusEvent) => mixed,
   onBlur?: (e: FocusEvent) => mixed,
+  onKeyUp?: (e: KeyboardEvent) => mixed,
   onKeyDown?: (e: KeyboardEvent) => mixed,
 };
 
@@ -509,9 +511,12 @@ export default class Editor extends React.Component<Props, State> {
       placeholder,
       readOnly,
       required,
+      onClick,
       onFocus,
       onBlur,
+      onKeyUp,
       /* eslint-disable no-unused-vars */
+      onKeyDown,
       onValueChange,
       tabSize,
       insertSpaces,
@@ -542,6 +547,8 @@ export default class Editor extends React.Component<Props, State> {
           value={value}
           onChange={this._handleChange}
           onKeyDown={this._handleKeyDown}
+          onClick={onClick}
+          onKeyUp={onKeyUp}
           onFocus={onFocus}
           onBlur={onBlur}
           disabled={disabled}
