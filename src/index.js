@@ -556,7 +556,8 @@ export default class Editor extends React.Component<Props, State> {
             ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
             : { children: highlighted })}
         />
-        <style type="text/css">{cssText}</style>
+        {/* eslint-disable-next-line react/no-danger*/}
+        <style type="text/css" dangerouslySetInnerHTML={{ __html: cssText }} />
       </div>
     );
   }
