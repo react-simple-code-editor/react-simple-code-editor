@@ -34,7 +34,6 @@ type Props = React.ElementConfig<'div'> & {
 
 type State = {
   capture: boolean,
-  ie: boolean,
 };
 
 type Record = {
@@ -77,17 +76,22 @@ const cssText = /* CSS */ `
 }
 
 /**
- * IE doesn't support '-webkit-text-fill-color'
- * So we use 'color: transparent' to make the text transparent on IE
- * Unlike other browsers, it doesn't affect caret color in IE
+ * Hack to apply on some CSS on IE10 and IE11
  */
-.${className}-ie {
-  color: transparent !important;
-}
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  /**
+    * IE doesn't support '-webkit-text-fill-color'
+    * So we use 'color: transparent' to make the text transparent on IE
+    * Unlike other browsers, it doesn't affect caret color in IE
+    */
+  .${className} {
+    color: transparent !important;
+  }
 
-.${className}-ie::selection {
-  background-color: #accef7 !important;
-  color: transparent !important;
+  .${className}::selection {
+    background-color: #accef7 !important;
+    color: transparent !important;
+  }
 }
 `;
 
@@ -101,16 +105,9 @@ export default class Editor extends React.Component<Props, State> {
 
   state = {
     capture: true,
-    ie: false,
   };
 
   componentDidMount() {
-    if (/Trident/.test(navigator.userAgent)) {
-      // The browser is Internet Explorer
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState({ ie: true });
-    }
-
     this._recordCurrentState();
   }
 
@@ -545,7 +542,7 @@ export default class Editor extends React.Component<Props, State> {
             ...styles.textarea,
             ...contentStyle,
           }}
-          className={`${className} ${this.state.ie ? `${className}-ie` : ''}`}
+          className={className}
           id={textareaId}
           value={value}
           onChange={this._handleChange}
@@ -576,7 +573,7 @@ export default class Editor extends React.Component<Props, State> {
             ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
             : { children: highlighted })}
         />
-        {/* eslint-disable-next-line react/no-danger*/}
+        {/* eslint-disable-next-line react/no-danger */}
         <style type="text/css" dangerouslySetInnerHTML={{ __html: cssText }} />
       </div>
     );
