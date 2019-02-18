@@ -598,6 +598,7 @@ const styles = {
     width: '100%',
     resize: 'none',
     color: 'inherit',
+    overflow: 'hidden',
     MozOsxFontSmoothing: 'grayscale',
     WebkitFontSmoothing: 'antialiased',
     WebkitTextFillColor: 'transparent',
