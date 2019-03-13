@@ -585,7 +585,7 @@ const styles = {
     position: 'relative',
     textAlign: 'left',
     whiteSpace: 'pre-wrap',
-    wordBreak: 'keep-all',
+    wordBreak: 'break-all',
     boxSizing: 'border-box',
     padding: 0,
     overflow: 'hidden',
