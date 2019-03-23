@@ -4,7 +4,7 @@
     "changelog": "conventional-changelog -p angular | tail -n +3"
   },
   "git": {
-    "commitMessage": "chore: release %s",
+    "commit": false,
     "tagName": "v%s"
   },
   "npm": {
