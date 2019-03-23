@@ -584,9 +584,6 @@ const styles = {
   container: {
     position: 'relative',
     textAlign: 'left',
-    whiteSpace: 'pre-wrap',
-    wordBreak: 'keep-all',
-    overflowWrap: 'break-word',
     boxSizing: 'border-box',
     padding: 0,
     overflow: 'hidden',
@@ -625,8 +622,8 @@ const styles = {
     textIndent: 'inherit',
     textRendering: 'inherit',
     textTransform: 'inherit',
-    whiteSpace: 'inherit',
-    wordBreak: 'inherit',
-    overflowWrap: 'inherit',
+    whiteSpace: 'pre-wrap',
+    wordBreak: 'keep-all',
+    overflowWrap: 'break-word',
   },
 };
