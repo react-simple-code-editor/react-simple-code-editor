@@ -53,7 +53,7 @@ class App extends React.Component<{}, State> {
               value={this.state.code}
               onValueChange={code => this.setState({ code })}
               highlight={code => highlight(code, languages.jsx)}
-              padding={8}
+              padding={10}
               className="container__editor"
             />
           </div>
