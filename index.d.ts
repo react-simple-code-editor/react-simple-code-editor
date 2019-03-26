@@ -13,7 +13,7 @@ declare module 'react-simple-code-editor' {
       tabSize?: number;
       insertSpaces?: boolean;
       ignoreTabKey?: boolean;
-      padding?: number | string | Array<number | string>;
+      padding?: number | string;
       style?: React.CSSProperties;
 
       // Props for the textarea

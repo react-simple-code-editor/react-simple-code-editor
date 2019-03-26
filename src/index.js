@@ -11,7 +11,7 @@ type Props = React.ElementConfig<'div'> & {
   tabSize: number,
   insertSpaces: boolean,
   ignoreTabKey: boolean,
-  padding: number | string | Array<number | string>,
+  padding: number | string,
   style?: {},
 
   // Props for the textarea
@@ -525,12 +525,9 @@ export default class Editor extends React.Component<Props, State> {
     } = this.props;
 
     let contentStyle;
-    if (Array.isArray(padding)) {
+    if (typeof padding === 'string') {
       contentStyle = {
-        paddingTop: padding[0],
-        paddingRight: padding[1],
-        paddingBottom: padding[2],
-        paddingLeft: padding[3],
+        padding,
       };
     } else {
       contentStyle = {
