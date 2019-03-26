@@ -525,7 +525,6 @@ export default class Editor extends React.Component<Props, State> {
     } = this.props;
 
     let contentStyle;
-
     if (Array.isArray(padding)) {
       contentStyle = {
         paddingTop: padding[0],
