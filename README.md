@@ -80,7 +80,7 @@ The editor accepts all the props accepted by `textarea`. In addition, you can pa
 - `onValueChange` (`string => mixed`): Callback which is called when the value of the editor changes. You'll need to update the value prop when this is called.
 - `highlight` (`string => string | React.Node`): Callback which will receive text to highlight. You'll need to return an HTML string or a React element with syntax highlighting using a library such as [`prismjs`](https://prismjs.com).
 - `tabSize` (`number`): The number of characters to insert when pressing tab key. For example, for 4 space indentation, `tabSize` will be `4` and `insertSpaces` will be `true`. Default: `2`.
-- `insertSpaces` (`boolean`): Whether to use spaces for indentation. Default: `true`.
+- `insertSpaces` (`boolean`): Whether to use spaces for indentation. Default: `true`. If you set it to `false`, you might also want to set `tabSize` to `1`.
 - `ignoreTabKey` (`boolean`): Whether the editor should ignore tab key presses so that keyboard users can tab past the editor. Users can toggle this behaviour using `Ctrl+Shift+M` (Mac) / `Ctrl+M` manually when this is `false`. Default: `false`.
 - `padding` (`number`): Optional padding for code. Default: `0`.
 - `textareaId` (`string`): An ID for the underlying `textarea`, can be useful for setting a `label`.

@@ -253,7 +253,7 @@ export default class Editor extends React.Component<Props, State> {
 
     const { value, selectionStart, selectionEnd } = e.target;
 
-    const tabCharacter = (insertSpaces ? ' ' : '     ').repeat(tabSize);
+    const tabCharacter = (insertSpaces ? ' ' : '\t').repeat(tabSize);
 
     if (e.keyCode === KEYCODE_TAB && !ignoreTabKey && this.state.capture) {
       // Prevent focus change
