@@ -65,40 +65,13 @@ const isWindows = 'navigator' in global && /Win/i.test(navigator.platform);
 const isMacLike =
   'navigator' in global && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
-const container = 'npm__react-simple-code-editor__container';
+const className = 'npm__react-simple-code-editor__textarea';
 
 const cssText = /* CSS */ `
 /**
- * Make sure that layout related properties cannot be set on the children
- * They will likely break the editor when set. The user can always use !important to force override.
- */
-.${container} > pre * {
-  display: inline;
-  font-family: inherit;
-  font-size: inherit;
-  font-style: inherit;
-  font-variant-ligatures: inherit;
-  font-weight: inherit;
-  letter-spacing: inherit;
-  line-height: inherit;
-  margin-top: 0;
-  margin-right: 0;
-  margin-bottom: 0;
-  margin-left: 0;
-  padding-top: 0;
-  padding-right: 0;
-  padding-bottom: 0;
-  padding-left: 0;
-  border-top: 0;
-  border-right: 0;
-  border-bottom: 0;
-  border-left: 0;
-}
-
-/**
  * Reset the text fill color so that placeholder is visible
  */
-.${container} > textarea:empty {
+.${className}:empty {
   -webkit-text-fill-color: inherit !important;
 }
 
@@ -111,11 +84,11 @@ const cssText = /* CSS */ `
     * So we use 'color: transparent' to make the text transparent on IE
     * Unlike other browsers, it doesn't affect caret color in IE
     */
-  .${container} > textarea {
+  .${className} {
     color: transparent !important;
   }
 
-  .${container} > textarea::selection {
+  .${className}::selection {
     background-color: #accef7 !important;
     color: transparent !important;
   }
@@ -525,7 +498,6 @@ export default class Editor extends React.Component<Props, State> {
     const {
       value,
       style,
-      className,
       padding,
       highlight,
       textareaId,
@@ -562,11 +534,7 @@ export default class Editor extends React.Component<Props, State> {
     const highlighted = highlight(value);
 
     return (
-      <div
-        {...rest}
-        style={{ ...styles.container, ...style }}
-        className={`${container} ${className || ''}`}
-      >
+      <div {...rest} style={{ ...styles.container, ...style }}>
         <textarea
           ref={c => (this._input = c)}
           style={{
@@ -574,6 +542,7 @@ export default class Editor extends React.Component<Props, State> {
             ...styles.textarea,
             ...contentStyle,
           }}
+          className={className}
           id={textareaId}
           value={value}
           onChange={this._handleChange}
@@ -637,14 +606,8 @@ const styles = {
     pointerEvents: 'none',
   },
   editor: {
-    marginTop: 0,
-    marginRight: 0,
-    marginBottom: 0,
-    marginLeft: 0,
-    borderTop: 0,
-    borderRight: 0,
-    borderBottom: 0,
-    borderLeft: 0,
+    margin: 0,
+    border: 0,
     background: 'none',
     boxSizing: 'inherit',
     display: 'inherit',
