@@ -61,9 +61,9 @@ const KEYCODE_BACK_QUOTE = 192;
 const HISTORY_LIMIT = 100;
 const HISTORY_TIME_GAP = 3000;
 
-const isWindows = 'navigator' in global && /Win/i.test(navigator.platform);
+const isWindows = 'navigator' in window && /Win/i.test(navigator.platform);
 const isMacLike =
-  'navigator' in global && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+  'navigator' in window && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
 const className = 'npm__react-simple-code-editor__textarea';
 
