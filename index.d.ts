@@ -1,4 +1,4 @@
-declare module 'react-simple-code-editor' {
+declare module '@outsystems/react-simple-code-editor' {
   import * as React from 'react';
 
   export default class extends React.Component<
