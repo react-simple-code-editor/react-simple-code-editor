@@ -1,7 +1,7 @@
 {
-  "name": "react-simple-code-editor",
-  "version": "0.0.0",
-  "description": "Simple no-frills code editor with syntax highlighting",
+  "name": "@outsystems/react-simple-code-editor",
+  "version": "0.9.12",
+  "description": "A fork of react-simple-code-editor to generate AMD module",
   "keywords": [
     "code",
     "editor",
@@ -22,10 +22,8 @@
       "pre-commit": "yarn lint && yarn flow"
     }
   },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
   "main": "lib/index.js",
+  "module": "lib/index.js",
   "types": "index.d.ts",
   "files": [
     "lib/",
@@ -33,7 +31,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/satya164/react-simple-code-editor.git"
+    "url": "git+https://github.com/OutSystems/react-simple-code-editor"
   },
   "author": "Satyajit Sahoo <satyajit.happy@gmail.com> (https://github.com/satya164/)",
   "license": "MIT",
