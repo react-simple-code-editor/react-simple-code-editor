@@ -1,5 +1,4 @@
 /* @flow */
-/* global global */
 
 import * as React from 'react';
 
@@ -439,10 +438,10 @@ export default class Editor extends React.Component<Props, State> {
         ? // Trigger redo with ⌘+Shift+Z on Mac
           e.metaKey && e.keyCode === KEYCODE_Z && e.shiftKey
         : isWindows
-          ? // Trigger redo with Ctrl+Y on Windows
-            e.ctrlKey && e.keyCode === KEYCODE_Y
-          : // Trigger redo with Ctrl+Shift+Z on other platforms
-            e.ctrlKey && e.keyCode === KEYCODE_Z && e.shiftKey) &&
+        ? // Trigger redo with Ctrl+Y on Windows
+          e.ctrlKey && e.keyCode === KEYCODE_Y
+        : // Trigger redo with Ctrl+Shift+Z on other platforms
+          e.ctrlKey && e.keyCode === KEYCODE_Z && e.shiftKey) &&
       !e.altKey
     ) {
       e.preventDefault();
@@ -475,6 +474,13 @@ export default class Editor extends React.Component<Props, State> {
     );
 
     this.props.onValueChange(value);
+  };
+
+  _inputRef = (el: *) => {
+    this._input = el;
+    if (typeof this.props.inputRef === 'function') {
+      this.props.inputRef(el);
+    }
   };
 
   _history: History = {
@@ -536,7 +542,7 @@ export default class Editor extends React.Component<Props, State> {
     return (
       <div {...rest} style={{ ...styles.container, ...style }}>
         <textarea
-          ref={c => (this._input = c)}
+          ref={this._inputRef}
           style={{
             ...styles.editor,
             ...styles.textarea,

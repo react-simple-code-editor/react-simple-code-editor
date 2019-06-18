@@ -17,6 +17,7 @@ declare module '@outsystems/react-simple-code-editor' {
       style?: React.CSSProperties;
 
       // Props for the textarea
+      inputRef?: (el: any) => void;
       textareaId?: string,
       autoFocus?: boolean;
       disabled?: boolean;
