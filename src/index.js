@@ -57,6 +57,7 @@ const KEYCODE_PARENS = 57;
 const KEYCODE_BRACKETS = 219;
 const KEYCODE_QUOTE = 222;
 const KEYCODE_BACK_QUOTE = 192;
+const KEYCODE_ESCAPE = 27;
 
 const HISTORY_LIMIT = 100;
 const HISTORY_TIME_GAP = 3000;
@@ -249,6 +250,10 @@ export default class Editor extends React.Component<Props, State> {
       if (e.defaultPrevented) {
         return;
       }
+    }
+
+    if (e.keyCode === KEYCODE_ESCAPE) {
+      e.target.blur();
     }
 
     const { value, selectionStart, selectionEnd } = e.target;
