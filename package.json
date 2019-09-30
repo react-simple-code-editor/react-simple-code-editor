@@ -38,13 +38,13 @@
   "author": "Satyajit Sahoo <satyajit.happy@gmail.com> (https://github.com/satya164/)",
   "license": "MIT",
   "devDependencies": {
+    "@release-it/conventional-changelog": "^1.1.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "conventional-changelog-cli": "^2.0.12",
     "dedent": "^0.7.0",
     "del-cli": "^1.1.0",
     "eslint": "^5.8.0",
@@ -57,7 +57,7 @@
     "prismjs": "^1.15.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
-    "release-it": "^10.3.1"
+    "release-it": "^12.4.1"
   },
   "peerDependencies": {
     "react": "^16.0.0",
