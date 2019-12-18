@@ -18,6 +18,7 @@ declare module 'react-simple-code-editor' {
 
       // Props for the textarea
       textareaId?: string,
+      textareaClassName?: string,
       autoFocus?: boolean;
       disabled?: boolean;
       form?: string;
@@ -32,6 +33,7 @@ declare module 'react-simple-code-editor' {
       onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
       onKeyUp?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
       onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+      preClassName?: string,
     }
   > {
     session: {

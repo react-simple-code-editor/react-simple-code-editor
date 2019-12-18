@@ -16,6 +16,7 @@ type Props = React.ElementConfig<'div'> & {
 
   // Props for the textarea
   textareaId?: string,
+  textareaClassName?: string,
   autoFocus?: boolean,
   disabled?: boolean,
   form?: string,
@@ -30,6 +31,9 @@ type Props = React.ElementConfig<'div'> & {
   onBlur?: (e: FocusEvent) => mixed,
   onKeyUp?: (e: KeyboardEvent) => mixed,
   onKeyDown?: (e: KeyboardEvent) => mixed,
+
+  // Props for the hightlighted code’s pre element
+  preClassName?: string,
 };
 
 type State = {
@@ -506,6 +510,7 @@ export default class Editor extends React.Component<Props, State> {
       padding,
       highlight,
       textareaId,
+      textareaClassName,
       autoFocus,
       disabled,
       form,
@@ -526,6 +531,7 @@ export default class Editor extends React.Component<Props, State> {
       insertSpaces,
       ignoreTabKey,
       /* eslint-enable no-unused-vars */
+      preClassName,
       ...rest
     } = this.props;
 
@@ -547,7 +553,9 @@ export default class Editor extends React.Component<Props, State> {
             ...styles.textarea,
             ...contentStyle,
           }}
-          className={className}
+          className={
+            className + (textareaClassName ? ` ${textareaClassName}` : '')
+          }
           id={textareaId}
           value={value}
           onChange={this._handleChange}
@@ -572,6 +580,7 @@ export default class Editor extends React.Component<Props, State> {
           data-gramm={false}
         />
         <pre
+          className={preClassName}
           aria-hidden="true"
           style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
           {...(typeof highlighted === 'string'
