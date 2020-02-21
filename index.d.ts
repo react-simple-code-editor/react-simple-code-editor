@@ -1,11 +1,13 @@
 declare module 'react-simple-code-editor' {
   import * as React from 'react';
 
+  type Overwrite<T, U> = Pick<T, Exclude<keyof T, keyof U>> & U;
+
   export default class extends React.Component<
-    React.DetailedHTMLProps<
+    Overwrite<React.DetailedHTMLProps<
       React.HTMLAttributes<HTMLDivElement>,
       HTMLDivElement
-    > & {
+    >, {
       // Props for the component
       value: string;
       onValueChange: (value: string) => void;
@@ -35,7 +37,7 @@ declare module 'react-simple-code-editor' {
       onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
       preClassName?: string,
     }
-  > {
+  >> {
     session: {
       history: {
         stack: Array<{
