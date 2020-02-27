@@ -39,35 +39,33 @@ yarn add react-simple-code-editor
 You need to use the editor with a third party library which provides syntax highlighting. For example, it'll look like following with [`prismjs`](https://prismjs.com):
 
 ```js
-import React from 'react';
+import React, { useState } from 'react';
 import Editor from 'react-simple-code-editor';
 import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/themes/prism.css';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 
-const code = `function add(a, b) {
+const exampleCode = `function add(a, b) {
   return a + b;
-}
-`;
+}`;
 
-class App extends React.Component {
-  state = { code };
+const App = () => {
+  const [value, setValue] = useState(exampleCode);
 
-  render() {
-    return (
-      <Editor
-        value={this.state.code}
-        onValueChange={code => this.setState({ code })}
-        highlight={code => highlight(code, languages.js)}
-        padding={10}
-        style={{
-          fontFamily: '"Fira code", "Fira Mono", monospace',
-          fontSize: 12,
-        }}
-      />
-    );
-  }
-}
+  return (
+    <Editor
+      value={value}
+      onValueChange={setValue}
+      highlight={code => highlight(code, languages.js, 'js')}
+      padding={10}
+      style={{
+        fontFamily: '"Fira code", "Fira Mono", monospace',
+        fontSize: 12,
+      }}
+    />
+  );
+};
 ```
 
 Note that depending on your syntax highlighter, you might have to include additional CSS for syntax highlighting to work.
