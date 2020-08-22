@@ -84,6 +84,8 @@ The editor accepts all the props accepted by `textarea`. In addition, you can pa
 - `ignoreTabKey` (`boolean`): Whether the editor should ignore tab key presses so that keyboard users can tab past the editor. Users can toggle this behaviour using `Ctrl+Shift+M` (Mac) / `Ctrl+M` manually when this is `false`. Default: `false`.
 - `padding` (`number`): Optional padding for code. Default: `0`.
 - `textareaId` (`string`): An ID for the underlying `textarea`, can be useful for setting a `label`.
+- `textareaClassName` (`string`): A className for the underlying `textarea`, can be useful for more precise control of its styles.
+- `preClassName` (`string`): A className for the underlying `pre`, can be useful for more precise control of its styles.
 
 ## Demo
 
