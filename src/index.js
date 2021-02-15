@@ -26,6 +26,7 @@ type Props = React.ElementConfig<'div'> & {
   placeholder?: string,
   readOnly?: boolean,
   required?: boolean,
+  noWrap?: boolean,
   onClick?: (e: MouseEvent) => mixed,
   onFocus?: (e: FocusEvent) => mixed,
   onBlur?: (e: FocusEvent) => mixed,
@@ -520,6 +521,7 @@ export default class Editor extends React.Component<Props, State> {
       placeholder,
       readOnly,
       required,
+      noWrap,
       onClick,
       onFocus,
       onBlur,
@@ -540,6 +542,7 @@ export default class Editor extends React.Component<Props, State> {
       paddingRight: padding,
       paddingBottom: padding,
       paddingLeft: padding,
+      whiteSpace: noWrap ? 'pre' : 'pre-wrap',
     };
 
     const highlighted = highlight(value);
@@ -636,7 +639,6 @@ const styles = {
     textIndent: 'inherit',
     textRendering: 'inherit',
     textTransform: 'inherit',
-    whiteSpace: 'pre-wrap',
     wordBreak: 'keep-all',
     overflowWrap: 'break-word',
   },

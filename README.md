@@ -77,6 +77,7 @@ The editor accepts all the props accepted by `textarea`. In addition, you can pa
 - `tabSize` (`number`): The number of characters to insert when pressing tab key. For example, for 4 space indentation, `tabSize` will be `4` and `insertSpaces` will be `true`. Default: `2`.
 - `insertSpaces` (`boolean`): Whether to use spaces for indentation. Default: `true`. If you set it to `false`, you might also want to set `tabSize` to `1`.
 - `ignoreTabKey` (`boolean`): Whether the editor should ignore tab key presses so that keyboard users can tab past the editor. Users can toggle this behaviour using `Ctrl+Shift+M` (Mac) / `Ctrl+M` manually when this is `false`. Default: `false`.
+- `noWrap` (`boolean`): Whether the lines should break as necessary to fill line boxes. Default: `false`.
 - `padding` (`number`): Optional padding for code. Default: `0`.
 - `textareaId` (`string`): An ID for the underlying `textarea`, can be useful for setting a `label`.
 - `textareaClassName` (`string`): A className for the underlying `textarea`, can be useful for more precise control of its styles.
