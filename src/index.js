@@ -16,6 +16,7 @@ type Props = React.ElementConfig<'div'> & {
 
   // Props for the textarea
   textareaId?: string,
+  textareaClassName?: string,
   autoFocus?: boolean,
   disabled?: boolean,
   form?: string,
@@ -31,6 +32,9 @@ type Props = React.ElementConfig<'div'> & {
   onBlur?: (e: FocusEvent) => mixed,
   onKeyUp?: (e: KeyboardEvent) => mixed,
   onKeyDown?: (e: KeyboardEvent) => mixed,
+
+  // Props for the hightlighted code’s pre element
+  preClassName?: string,
 };
 
 type State = {
@@ -58,6 +62,7 @@ const KEYCODE_PARENS = 57;
 const KEYCODE_BRACKETS = 219;
 const KEYCODE_QUOTE = 222;
 const KEYCODE_BACK_QUOTE = 192;
+const KEYCODE_ESCAPE = 27;
 
 const HISTORY_LIMIT = 100;
 const HISTORY_TIME_GAP = 3000;
@@ -250,6 +255,10 @@ export default class Editor extends React.Component<Props, State> {
       if (e.defaultPrevented) {
         return;
       }
+    }
+
+    if (e.keyCode === KEYCODE_ESCAPE) {
+      e.target.blur();
     }
 
     const { value, selectionStart, selectionEnd } = e.target;
@@ -502,6 +511,7 @@ export default class Editor extends React.Component<Props, State> {
       padding,
       highlight,
       textareaId,
+      textareaClassName,
       autoFocus,
       disabled,
       form,
@@ -523,6 +533,7 @@ export default class Editor extends React.Component<Props, State> {
       insertSpaces,
       ignoreTabKey,
       /* eslint-enable no-unused-vars */
+      preClassName,
       ...rest
     } = this.props;
 
@@ -545,7 +556,9 @@ export default class Editor extends React.Component<Props, State> {
             ...styles.textarea,
             ...contentStyle,
           }}
-          className={className}
+          className={
+            className + (textareaClassName ? ` ${textareaClassName}` : '')
+          }
           id={textareaId}
           value={value}
           onChange={this._handleChange}
@@ -570,6 +583,7 @@ export default class Editor extends React.Component<Props, State> {
           data-gramm={false}
         />
         <pre
+          className={preClassName}
           aria-hidden="true"
           style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
           {...(typeof highlighted === 'string'

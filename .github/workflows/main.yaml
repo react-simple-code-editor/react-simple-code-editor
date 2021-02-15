@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Use Node.js 10
+      uses: actions/setup-node@v1
+      with:
+        version: 10
+
+    - name: Use Yarn
+      run: |
+        curl -o- -L https://yarnpkg.com/install.sh | bash
+
+    - name: Install dependencies
+      run: |
+        yarn --cwd website --frozen-lockfile
+
+    - name: Publish
+      env:
+        GITHUB_TOKEN: ${{ secrets.DEPLOY_GITHUB_TOKEN }}
+        GITHUB_EMAIL: ${{ secrets.DEPLOY_GITHUB_EMAIL }}
+        GITHUB_USER: ${{ secrets.DEPLOY_GITHUB_USER }}
+      run: |
+        git config --global user.email "$GITHUB_EMAIL"
+        git config --global user.name "$GITHUB_USER"
+        echo "machine github.com login $GITHUB_USER password $GITHUB_TOKEN" > ~/.netrc
+        yarn gh-pages
