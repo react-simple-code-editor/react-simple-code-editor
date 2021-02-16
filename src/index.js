@@ -114,6 +114,13 @@ export default class Editor extends React.Component<Props, State> {
 
   componentDidMount() {
     this._recordCurrentState();
+
+    if (!document.getElementById(className)) {
+      const styleElement = document.createElement('style');
+      styleElement.setAttribute('id', className);
+      styleElement.innerHTML = cssText;
+      document.head && document.head.appendChild(styleElement);
+    }
   }
 
   _recordCurrentState = () => {
@@ -587,8 +594,6 @@ export default class Editor extends React.Component<Props, State> {
             ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
             : { children: highlighted })}
         />
-        {/* eslint-disable-next-line react/no-danger */}
-        <style type="text/css" dangerouslySetInnerHTML={{ __html: cssText }} />
       </div>
     );
   }
