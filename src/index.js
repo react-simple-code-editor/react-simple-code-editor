@@ -575,7 +575,6 @@ export default class Editor extends React.Component<Props, State> {
           autoFocus={autoFocus}
           autoCapitalize="off"
           autoComplete="off"
-          autoCorrect="off"
           spellCheck={false}
           data-gramm={false}
         />
