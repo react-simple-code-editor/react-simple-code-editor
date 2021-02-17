@@ -74,13 +74,6 @@ const className = 'npm__react-simple-code-editor__textarea';
 
 const cssText = /* CSS */ `
 /**
- * Reset the text fill color so that placeholder is visible
- */
-.${className}:empty {
-  -webkit-text-fill-color: inherit !important;
-}
-
-/**
  * Hack to apply on some CSS on IE10 and IE11
  */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
@@ -558,6 +551,7 @@ export default class Editor extends React.Component<Props, State> {
           style={{
             ...styles.editor,
             ...styles.textarea,
+            ...(value && styles.textareaValue),
             ...contentStyle,
           }}
           className={
@@ -618,6 +612,8 @@ const styles = {
     overflow: 'hidden',
     MozOsxFontSmoothing: 'grayscale',
     WebkitFontSmoothing: 'antialiased',
+  },
+  textareaValue: {
     WebkitTextFillColor: 'transparent',
   },
   highlight: {
