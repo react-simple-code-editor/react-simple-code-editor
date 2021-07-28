@@ -13,6 +13,7 @@ declare module '@outsystems/react-simple-code-editor' {
       tabSize?: number;
       insertSpaces?: boolean;
       ignoreTabKey?: boolean;
+      noWrap?: boolean;
       padding?: number | string;
       style?: React.CSSProperties;
 
