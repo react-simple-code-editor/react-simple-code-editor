@@ -1,6 +1,6 @@
 {
   "name": "@outsystems/react-simple-code-editor",
-  "version": "0.9.5-os4",
+  "version": "0.9.5-os5",
   "description": "A fork of react-simple-code-editor to generate AMD module",
   "keywords": [
     "code",

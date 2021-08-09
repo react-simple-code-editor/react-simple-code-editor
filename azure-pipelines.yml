@@ -1,0 +1,127 @@
+variables:
+  SourcesDirectory: '$(Build.SourcesDirectory)'
+  Project: 'ReactSimpleCodeEditor'
+  BuildConfiguration: 'Release'
+  Config: '--configuration=$(BuildConfiguration)'
+  CakePathLocation: '$(System.DefaultWorkingDirectory)'
+  ReportDir: '$(Common.TestResultsDirectory)\coverage_report'
+  TagName: 'v$(Build.BuildNumber)'
+  
+stages: 
+- stage: Build
+  displayName: 'Build'
+  jobs:
+  - job: Build
+    displayName: 'Build Job'
+    timeoutInMinutes: 8
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    #Install Nuget version 5.2
+    - task: NuGetToolInstaller@1
+      displayName: 'Install NuGet'
+      inputs:
+        versionSpec: 5.2.x
+
+    #Authenticate the machine with the private artifact repository
+    - task: PythonScript@0
+      displayName: 'Run a Python script'
+      inputs:
+        scriptPath: '$(System.DefaultWorkingDirectory)\authenticate.py'
+        arguments: '"$(System.AccessToken)" git'
+
+    #Restore the project packages
+    - task: Cake@0
+      displayName: 'Restore Packages'
+      inputs:
+        script: 'build.cake'
+        target: 'Restore-Packages'
+        verbosity: 'Verbose'
+        arguments: '$(Config)'
+
+    #Builds the project
+    - task: Cake@0
+      displayName: 'Build'
+      inputs:
+        script: '$(CakePathLocation)/build.cake'
+        target: 'Build'
+        verbosity: 'Verbose'
+        arguments: '$(Config)'
+
+    #Runs tests against the project
+    - task: Cake@0
+      displayName: 'Tests'
+      inputs:
+        script: '$(CakePathLocation)/build.cake'
+        target: 'Tests'
+        verbosity: 'Verbose'
+        arguments: '$(Config) --TestResultsDirectory=$(Common.TestResultsDirectory)'
+    
+    #Creates the package
+    - task: Cake@0
+      displayName: 'Package'
+      inputs:
+        script: '$(CakePathLocation)/build.cake'
+        target: 'Package'
+        verbosity: 'Verbose'
+        arguments: '$(Config)'
+      
+    #Generates the code coverage report
+    - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+      displayName: 'Generate Coverage Report'
+      timeoutInMinutes: 1
+      continueOnError: true
+      inputs:
+        reports: '$(Common.TestResultsDirectory)\coverage.*.xml'
+        targetdir: '$(ReportDir)'
+        reporttypes: 'HtmlInline_AzurePipelines;Cobertura'
+
+    #Publishes the code coverage report
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish Coverage Report'
+      timeoutInMinutes: 1
+      continueOnError: true
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(ReportDir)\Cobertura.xml'
+        pathToSources: '$(Build.SourcesDirectory)\'
+        reportDirectory: '$(ReportDir)'
+    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: 'artifacts'
+        artifact: 'artifacts'
+        publishLocation: 'pipeline'
+
+- stage: Deploy
+  displayName: 'Deploy'
+  jobs:
+  - deployment: Deploy
+    displayName: 'Deploy to nuget private repository and creates a git release'
+    timeoutInMinutes: 8
+    pool:
+      vmImage: 'windows-latest'
+    environment: Release
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+          #Creates a Github release
+          - task: GitHubRelease@1
+            inputs:
+              gitHubConnection: 'GitHub Release'
+              repositoryName: '$(Build.Repository.Name)'
+              action: 'create'
+              target: '$(Build.SourceVersion)'
+              tagSource: 'userSpecifiedTag'
+              tag: '$(TagName)'
+              changeLogCompareToRelease: 'lastFullRelease'
+              changeLogType: 'commitBased'
+
+          #Publishes the package into the private artifact repository    
+          - task: NuGetCommand@2
+            inputs:
+              command: 'push'
+              packagesToPush: '$(Pipeline.Workspace)/artifacts/**/*.nupkg;!$(Pipeline.Workspace)/artifacts/**/*.symbols.nupkg'
+              nuGetFeedType: 'internal'
+              publishVstsFeed: 'd8b4d1eb-aeb3-4b5b-9b43-37b4fc985e2f'
