@@ -1,69 +1,55 @@
+#tool "nuget:?package=Microsoft.TestPlatform&version=15.7.0"
+#addin nuget:?package=Cake.Npm&version=0.17.0
+#addin nuget:?package=Cake.Json&version=4.0.0
+#addin nuget:?package=Newtonsoft.Json&version=9.0.1
+using System;
+using System.IO;
+////////////////////////////////////////////////////////////////
+// Use always this structure. If you don't need to run some   //
+// task, comment the code inside it.                          //
+////////////////////////////////////////////////////////////////
+
 var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Debug");
-var TestResultsDirectory = Argument("TestResultsDirectory", "./");
-var restore=Task("Restore-Packages")
+var configuration = Argument("configuration", "Release"); //Here you can configure if you want do debug or release
+
+var install=Task("Install")
     .Does(() =>
-    {
-        Information("Starting Restore");
-        var settings = new DotNetCoreRestoreSettings
-        {
-            Verbosity = DotNetCoreVerbosity.Minimal,
-            Interactive = true
-        };
-        DotNetCoreRestore(settings);
-        Information("Ending Restore");
-    });
+{
+    Information("Starting Install");
+    NpmCi();      
+    Information("Ending Install");
+});
 
-var build = Task("Build")
-    .Does(()=>
-    {
-        Information("Starting Build");
-        var settings = new DotNetCoreMSBuildSettings();
-        DotNetCoreMSBuild(settings.SetConfiguration(configuration));
-        Information("Ending Build");
-    });
-
+var build=Task("Build")
+    .Does(() =>
+{
+    Information("Starting Build");
+    var conf = ParseJsonFromFile("package.json");
+    if(conf["scripts"]["build"]!=null)
+        NpmRunScript("build");      
+    Information("Ending Build");
+});
 var tests = Task("Tests")
-    .Does(()=>
-    {
+	.Does(()=>
+	{	
         Information("Starting Tests");
-        var settings = new DotNetCoreTestSettings
-        {
-            Configuration = configuration,
-            NoRestore = true,
-            NoBuild = true,
-            ArgumentCustomization = args=>args.Append(@"/p:CollectCoverage=true")
-                                            .Append(@"/p:CoverletOutputFormat=cobertura")
-                                            .Append(@"/p:CoverletOutput="+TestResultsDirectory+@"\coverage.xml")
-        };
-        DotNetCoreTest("",settings);
+        var conf = ParseJsonFromFile("package.json");
+        if(conf["scripts"]["test"]!=null)
+            NpmRunScript("test");
         Information("Ending Tests");
-    });
+	});
 
-
-var packageNuspecFile = Task("Package")
+var package = Task("Package")
     .Does(()=>
     {
-        Information("Starting Package");
-        var settings = new DotNetCorePackSettings
-        {
-            Configuration = configuration,
-            NoRestore = true,
-            NoBuild = true,
-            Verbosity = DotNetCoreVerbosity.Normal,
-            OutputDirectory = "./artifacts/"
-        };
-        DotNetCorePack("./",settings);
-        Information("Ending Package");
+        Information("Starting Pack");
+        CreateDirectory("./artifacts");
+        Environment.CurrentDirectory =@".\artifacts";
+        NpmPack(settings => settings.FromSource("./..")); 
+        Information("Ending Pack");
     });
-
-var fullRun = Task("FullRun")
-    .IsDependentOn("Restore-Packages")
-    .IsDependentOn("Build")
-    .IsDependentOn("Tests")
-    .IsDependentOn("Package");
-
+    
 Task("Default")
-    .IsDependentOn("FullRun");
+    .IsDependentOn("Package");
 
 RunTarget(target);
