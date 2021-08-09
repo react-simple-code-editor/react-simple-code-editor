@@ -63,7 +63,7 @@ stages:
     timeoutInMinutes: 8
     pool:
       vmImage: 'windows-latest'
-    environment: Release
+    environment: Automatic-Release
     strategy: 
       runOnce:
         deploy:
