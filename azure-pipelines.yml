@@ -31,73 +31,35 @@ stages:
         arguments: '"$(System.AccessToken)" git'
 
     #Restore the project packages
-    - task: Cake@0
-      displayName: 'Restore Packages'
+    - task: npmAuthenticate@0
       inputs:
-        script: 'build.cake'
-        target: 'Restore-Packages'
-        verbosity: 'Verbose'
-        arguments: '$(Config)'
+        workingFile: '.npmrc'
+        customEndpoint: 'NPM Authentication Token'
 
-    #Builds the project
-    - task: Cake@0
-      displayName: 'Build'
+    - task: cake-build.cake.cake-build-task.Cake@0
+      displayName: Install
       inputs:
-        script: '$(CakePathLocation)/build.cake'
-        target: 'Build'
-        verbosity: 'Verbose'
-        arguments: '$(Config)'
+        target: Install
+        arguments: '--configuration=Release -Pipeline'
 
-    #Runs tests against the project
-    - task: Cake@0
-      displayName: 'Tests'
+    - task: cake-build.cake.cake-build-task.Cake@0
+      displayName: Build
       inputs:
-        script: '$(CakePathLocation)/build.cake'
-        target: 'Tests'
-        verbosity: 'Verbose'
-        arguments: '$(Config) --TestResultsDirectory=$(Common.TestResultsDirectory)'
-    
-    #Creates the package
-    - task: Cake@0
-      displayName: 'Package'
-      inputs:
-        script: '$(CakePathLocation)/build.cake'
-        target: 'Package'
-        verbosity: 'Verbose'
-        arguments: '$(Config)'
-      
-    #Generates the code coverage report
-    - task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
-      displayName: 'Generate Coverage Report'
-      timeoutInMinutes: 1
-      continueOnError: true
-      inputs:
-        reports: '$(Common.TestResultsDirectory)\coverage.*.xml'
-        targetdir: '$(ReportDir)'
-        reporttypes: 'HtmlInline_AzurePipelines;Cobertura'
+        target: Build
+        arguments: '--configuration=Release -Pipeline'
 
-    #Publishes the code coverage report
-    - task: PublishCodeCoverageResults@1
-      displayName: 'Publish Coverage Report'
-      timeoutInMinutes: 1
-      continueOnError: true
+    - task: cake-build.cake.cake-build-task.Cake@0
+      displayName: Tests
       inputs:
-        codeCoverageTool: 'Cobertura'
-        summaryFileLocation: '$(ReportDir)\Cobertura.xml'
-        pathToSources: '$(Build.SourcesDirectory)\'
-        reportDirectory: '$(ReportDir)'
-    
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: 'artifacts'
-        artifact: 'artifacts'
-        publishLocation: 'pipeline'
+        target: Tests
+        arguments: '--configuration=Release -Pipeline'
+
 
 - stage: Deploy
   displayName: 'Deploy'
   jobs:
   - deployment: Deploy
-    displayName: 'Deploy to nuget private repository and creates a git release'
+    displayName: 'Deploy to npm private repository and creates a git release'
     timeoutInMinutes: 8
     pool:
       vmImage: 'windows-latest'
@@ -119,9 +81,8 @@ stages:
               changeLogType: 'commitBased'
 
           #Publishes the package into the private artifact repository    
-          - task: NuGetCommand@2
+          - task: Npm@1
             inputs:
-              command: 'push'
-              packagesToPush: '$(Pipeline.Workspace)/artifacts/**/*.nupkg;!$(Pipeline.Workspace)/artifacts/**/*.symbols.nupkg'
-              nuGetFeedType: 'internal'
-              publishVstsFeed: 'd8b4d1eb-aeb3-4b5b-9b43-37b4fc985e2f'
+              command: 'publish'
+              publishRegistry: 'useFeed'
+              publishFeed: 'd8b4d1eb-aeb3-4b5b-9b43-37b4fc985e2f'
