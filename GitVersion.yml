@@ -1,0 +1,20 @@
+assembly-versioning-scheme: Major
+assembly-file-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.0{WeightedPreReleaseNumber}'
+mode: ContinuousDelivery
+legacy-semver-padding: 0
+branches:
+  master:
+    tag: prerelease
+  feature:
+    tag: feature
+  hotfix:
+    mode: ContinuousDelivery
+    increment: None
+    tag: ''
+  support:
+    mode: ContinuousDelivery
+    increment: None
+    tag: ''
+ignore:
+  sha: []
