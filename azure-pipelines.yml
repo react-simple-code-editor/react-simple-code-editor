@@ -54,35 +54,29 @@ stages:
         target: Tests
         arguments: '--configuration=Release -Pipeline'
 
-
 - stage: Deploy
   displayName: 'Deploy'
   jobs:
-  - deployment: Deploy
-    displayName: 'Deploy to npm private repository and creates a git release'
+  - job: Deploy
+    displayName: 'Deploy'
     timeoutInMinutes: 8
     pool:
       vmImage: 'windows-latest'
-    environment: Automatic-Release
-    strategy: 
-      runOnce:
-        deploy:
-          steps:
-          #Creates a Github release
-          - task: GitHubRelease@1
-            inputs:
-              gitHubConnection: 'GitHub Release'
-              repositoryName: '$(Build.Repository.Name)'
-              action: 'create'
-              target: '$(Build.SourceVersion)'
-              tagSource: 'userSpecifiedTag'
-              tag: '$(TagName)'
-              changeLogCompareToRelease: 'lastFullRelease'
-              changeLogType: 'commitBased'
+    steps:
+      - task: GitHubRelease@1
+        inputs:
+          gitHubConnection: 'GitHub Release'
+          repositoryName: '$(Build.Repository.Name)'
+          action: 'create'
+          target: '$(Build.SourceVersion)'
+          tagSource: 'userSpecifiedTag'
+          tag: '$(TagName)'
+          changeLogCompareToRelease: 'lastFullRelease'
+          changeLogType: 'commitBased'
 
-          #Publishes the package into the private artifact repository    
-          - task: Npm@1
-            inputs:
-              command: 'publish'
-              publishRegistry: 'useFeed'
-              publishFeed: 'd8b4d1eb-aeb3-4b5b-9b43-37b4fc985e2f'
+      #Publishes the package into the private artifact repository    
+      - task: Npm@1
+        inputs:
+          command: 'publish'
+          publishRegistry: 'useFeed'
+          publishFeed: 'd8b4d1eb-aeb3-4b5b-9b43-37b4fc985e2f'
