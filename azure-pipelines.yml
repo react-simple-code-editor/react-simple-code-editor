@@ -21,7 +21,7 @@ stages:
     - task: NuGetToolInstaller@1
       displayName: 'Install NuGet'
       inputs:
-        versionSpec: 5.2.xeh
+        versionSpec: 5.2.x
 
     #Restore the project packages
     - task: npmAuthenticate@0
