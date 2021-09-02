@@ -1,3 +1,9 @@
+trigger:
+  branches:
+    include:
+    - master
+pr: none
+
 variables:
   SourcesDirectory: '$(Build.SourcesDirectory)'
   Project: 'ReactSimpleCodeEditor'
