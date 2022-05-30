@@ -7,7 +7,7 @@
 
 Simple no-frills code editor with syntax highlighting.
 
-<a href="https://raw.githubusercontent.com/satya164/react-simple-code-editor/master/demo/demo.gif"><img src="https://raw.githubusercontent.com/satya164/react-simple-code-editor/master/demo/demo.gif" width="400"></a>
+<a href="https://raw.githubusercontent.com/satya164/react-simple-code-editor/main/demo/demo.gif"><img src="https://raw.githubusercontent.com/satya164/react-simple-code-editor/main/demo/demo.gif" width="400"></a>
 
 ## Why
 
@@ -126,7 +126,7 @@ yarn lint -- --fix
 
 <!-- badges -->
 
-[build-badge]: https://img.shields.io/circleci/project/github/satya164/react-simple-code-editor/master.svg?style=flat-square
+[build-badge]: https://img.shields.io/circleci/project/github/satya164/react-simple-code-editor/main.svg?style=flat-square
 [build]: https://circleci.com/gh/satya164/react-simple-code-editor
 [license-badge]: https://img.shields.io/npm/l/react-simple-code-editor.svg?style=flat-square
 [license]: https://opensource.org/licenses/MIT
