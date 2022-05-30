@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "lib",
     "target": "es5",
+    "module": "commonjs",
     "sourceMap": true,
     "declaration": true,
     "allowUnreachableCode": false,
@@ -12,7 +13,6 @@
     "isolatedModules": true,
     "jsx": "react",
     "lib": ["esnext", "dom"],
-    "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
