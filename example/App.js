@@ -11,13 +11,12 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-markup';
 import './styles.css';
-
-// import doesn't seem to work properly with parcel for jsx
-require('prismjs/components/prism-jsx');
-
 type State = {
   code: string,
 };
+
+// import doesn't seem to work properly with parcel for jsx
+require('prismjs/components/prism-jsx');
 
 class App extends React.Component<{}, State> {
   state = {
