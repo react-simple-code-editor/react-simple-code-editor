@@ -1,21 +1,21 @@
-/* @flow */
 /* global require */
-/* eslint-disable import/no-commonjs */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Editor from '../src/index';
 import dedent from 'dedent';
-import { highlight, languages } from 'prismjs/components/prism-core';
+import { highlight, languages } from 'prismjs';
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-markup';
 import './styles.css';
+
 type State = {
-  code: string,
+  code: string;
 };
 
 // import doesn't seem to work properly with parcel for jsx
+// eslint-disable-next-line import/no-commonjs
 require('prismjs/components/prism-jsx');
 
 class App extends React.Component<{}, State> {
@@ -50,8 +50,8 @@ class App extends React.Component<{}, State> {
             <Editor
               placeholder="Type some code…"
               value={this.state.code}
-              onValueChange={code => this.setState({ code })}
-              highlight={code => highlight(code, languages.jsx)}
+              onValueChange={(code) => this.setState({ code })}
+              highlight={(code) => highlight(code, languages.jsx!, 'jsx')}
               padding={10}
               className="container__editor"
             />
@@ -62,5 +62,7 @@ class App extends React.Component<{}, State> {
   }
 }
 
-/* $FlowFixMe */
-ReactDOM.render(<App />, document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container!);
+
+root.render(<App />);

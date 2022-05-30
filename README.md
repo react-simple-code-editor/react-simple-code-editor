@@ -39,12 +39,12 @@ yarn add react-simple-code-editor
 You need to use the editor with a third party library which provides syntax highlighting. For example, it'll look like following with [`prismjs`](https://prismjs.com):
 
 ```js
-import React from "react";
-import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-import "prismjs/themes/prism.css"; //Example style, you can use another
+import React from 'react';
+import Editor from 'react-simple-code-editor';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/themes/prism.css'; //Example style, you can use another
 
 function App() {
   const [code, setCode] = React.useState(
@@ -53,8 +53,8 @@ function App() {
   return (
     <Editor
       value={code}
-      onValueChange={(code) => setCode(code)}
-      highlight={(code) => highlight(code, languages.js)}
+      onValueChange={code => setCode(code)}
+      highlight={code => highlight(code, languages.js)}
       padding={10}
       style={{
         fontFamily: '"Fira code", "Fira Mono", monospace',
@@ -111,10 +111,10 @@ While developing, you can run the example app to test your changes:
 yarn example
 ```
 
-Make sure your code passes Flow and ESLint. Run the following to verify:
+Make sure your code passes TypeScript and ESLint. Run the following to verify:
 
 ```sh
-yarn flow
+yarn typescript
 yarn lint
 ```
 

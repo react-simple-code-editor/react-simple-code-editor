@@ -1,6 +1,0 @@
-{
-  extends: "satya164",
-  env: {
-    browser: true
-  }
-}

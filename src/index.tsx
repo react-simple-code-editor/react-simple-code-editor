@@ -1,54 +1,53 @@
-/* @flow */
 /* global global */
 
 import * as React from 'react';
 
-type Props = React.ElementConfig<'div'> & {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   // Props for the component
-  value: string,
-  onValueChange: (value: string) => mixed,
-  highlight: (value: string) => string | React.Node,
-  tabSize: number,
-  insertSpaces: boolean,
-  ignoreTabKey: boolean,
-  padding: number | string,
-  style?: {},
+  value: string;
+  onValueChange: (value: string) => void;
+  highlight: (value: string) => string | React.ReactNode;
+  tabSize: number;
+  insertSpaces: boolean;
+  ignoreTabKey: boolean;
+  padding: number | string;
+  style?: React.CSSProperties;
 
   // Props for the textarea
-  textareaId?: string,
-  textareaClassName?: string,
-  autoFocus?: boolean,
-  disabled?: boolean,
-  form?: string,
-  maxLength?: number,
-  minLength?: number,
-  name?: string,
-  placeholder?: string,
-  readOnly?: boolean,
-  required?: boolean,
-  onClick?: (e: MouseEvent) => mixed,
-  onFocus?: (e: FocusEvent) => mixed,
-  onBlur?: (e: FocusEvent) => mixed,
-  onKeyUp?: (e: KeyboardEvent) => mixed,
-  onKeyDown?: (e: KeyboardEvent) => mixed,
+  textareaId?: string;
+  textareaClassName?: string;
+  autoFocus?: boolean;
+  disabled?: boolean;
+  form?: string;
+  maxLength?: number;
+  minLength?: number;
+  name?: string;
+  placeholder?: string;
+  readOnly?: boolean;
+  required?: boolean;
+  onClick?: React.MouseEventHandler<HTMLTextAreaElement>;
+  onFocus?: React.FocusEventHandler<HTMLTextAreaElement>;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
+  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
 
   // Props for the hightlighted code’s pre element
-  preClassName?: string,
+  preClassName?: string;
 };
 
 type State = {
-  capture: boolean,
+  capture: boolean;
 };
 
 type Record = {
-  value: string,
-  selectionStart: number,
-  selectionEnd: number,
+  value: string;
+  selectionStart: number;
+  selectionEnd: number;
 };
 
 type History = {
-  stack: Array<Record & { timestamp: number }>,
-  offset: number,
+  stack: (Record & { timestamp: number })[];
+  offset: number;
 };
 
 const KEYCODE_ENTER = 13;
@@ -116,7 +115,7 @@ export default class Editor extends React.Component<Props, State> {
     this._recordCurrentState();
   }
 
-  _recordCurrentState = () => {
+  private _recordCurrentState = () => {
     const input = this._input;
 
     if (!input) return;
@@ -131,10 +130,10 @@ export default class Editor extends React.Component<Props, State> {
     });
   };
 
-  _getLines = (text: string, position: number) =>
+  private _getLines = (text: string, position: number) =>
     text.substring(0, position).split('\n');
 
-  _recordChange = (record: Record, overwrite?: boolean = false) => {
+  private _recordChange = (record: Record, overwrite: boolean = false) => {
     const { stack, offset } = this._history;
 
     if (stack.length && offset > -1) {
@@ -166,14 +165,14 @@ export default class Editor extends React.Component<Props, State> {
         // Get the previous line
         const previous = this._getLines(last.value, last.selectionStart)
           .pop()
-          .match(re);
+          ?.match(re);
 
         // Get the current line
         const current = this._getLines(record.value, record.selectionStart)
           .pop()
-          .match(re);
+          ?.match(re);
 
-        if (previous && current && current[1].startsWith(previous[1])) {
+        if (previous?.[1] && current?.[1]?.startsWith(previous[1])) {
           // The last word of the previous line and current line match
           // Overwrite previous entry so that undo will remove whole word
           this._history.stack[this._history.offset] = { ...record, timestamp };
@@ -188,7 +187,7 @@ export default class Editor extends React.Component<Props, State> {
     this._history.offset++;
   };
 
-  _updateInput = (record: Record) => {
+  private _updateInput = (record: Record) => {
     const input = this._input;
 
     if (!input) return;
@@ -201,7 +200,7 @@ export default class Editor extends React.Component<Props, State> {
     this.props.onValueChange(record.value);
   };
 
-  _applyEdits = (record: Record) => {
+  private _applyEdits = (record: Record) => {
     // Save last selection state
     const input = this._input;
     const last = this._history.stack[this._history.offset];
@@ -219,7 +218,7 @@ export default class Editor extends React.Component<Props, State> {
     this._updateInput(record);
   };
 
-  _undoEdit = () => {
+  private _undoEdit = () => {
     const { stack, offset } = this._history;
 
     // Get the previous edit
@@ -232,7 +231,7 @@ export default class Editor extends React.Component<Props, State> {
     }
   };
 
-  _redoEdit = () => {
+  private _redoEdit = () => {
     const { stack, offset } = this._history;
 
     // Get the next edit
@@ -245,7 +244,7 @@ export default class Editor extends React.Component<Props, State> {
     }
   };
 
-  _handleKeyDown = (e: *) => {
+  private _handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const { tabSize, insertSpaces, ignoreTabKey, onKeyDown } = this.props;
 
     if (onKeyDown) {
@@ -257,10 +256,10 @@ export default class Editor extends React.Component<Props, State> {
     }
 
     if (e.keyCode === KEYCODE_ESCAPE) {
-      e.target.blur();
+      e.currentTarget.blur();
     }
 
-    const { value, selectionStart, selectionEnd } = e.target;
+    const { value, selectionStart, selectionEnd } = e.currentTarget;
 
     const tabCharacter = (insertSpaces ? ' ' : '\t').repeat(tabSize);
 
@@ -295,7 +294,7 @@ export default class Editor extends React.Component<Props, State> {
             value: nextValue,
             // Move the start cursor if first line in selection was modified
             // It was modified only if it started with a tab
-            selectionStart: startLineText.startsWith(tabCharacter)
+            selectionStart: startLineText?.startsWith(tabCharacter)
               ? selectionStart - tabCharacter.length
               : selectionStart,
             // Move the end cursor by total number of characters removed
@@ -322,9 +321,10 @@ export default class Editor extends React.Component<Props, State> {
             .join('\n'),
           // Move the start cursor by number of characters added in first line of selection
           // Don't move it if it there was no text before cursor
-          selectionStart: /\S/.test(startLineText)
-            ? selectionStart + tabCharacter.length
-            : selectionStart,
+          selectionStart:
+            startLineText && /\S/.test(startLineText)
+              ? selectionStart + tabCharacter.length
+              : selectionStart,
           // Move the end cursor by total number of characters added
           selectionEnd:
             selectionEnd + tabCharacter.length * (endLine - startLine + 1),
@@ -368,9 +368,9 @@ export default class Editor extends React.Component<Props, State> {
       if (selectionStart === selectionEnd) {
         // Get the current line
         const line = this._getLines(value, selectionStart).pop();
-        const matches = line.match(/^\s+/);
+        const matches = line?.match(/^\s+/);
 
-        if (matches && matches[0]) {
+        if (matches?.[0]) {
           e.preventDefault();
 
           // Preserve indentation on inserting a new line
@@ -465,14 +465,14 @@ export default class Editor extends React.Component<Props, State> {
       e.preventDefault();
 
       // Toggle capturing tab key so users can focus away
-      this.setState(state => ({
+      this.setState((state) => ({
         capture: !state.capture,
       }));
     }
   };
 
-  _handleChange = (e: *) => {
-    const { value, selectionStart, selectionEnd } = e.target;
+  private _handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { value, selectionStart, selectionEnd } = e.currentTarget;
 
     this._recordChange(
       {
@@ -486,12 +486,12 @@ export default class Editor extends React.Component<Props, State> {
     this.props.onValueChange(value);
   };
 
-  _history: History = {
+  private _history: History = {
     stack: [],
     offset: -1,
   };
 
-  _input: ?HTMLTextAreaElement;
+  private _input: HTMLTextAreaElement | null = null;
 
   get session() {
     return {
@@ -524,13 +524,13 @@ export default class Editor extends React.Component<Props, State> {
       onFocus,
       onBlur,
       onKeyUp,
-      /* eslint-disable no-unused-vars */
+      /* eslint-disable @typescript-eslint/no-unused-vars */
       onKeyDown,
       onValueChange,
       tabSize,
       insertSpaces,
       ignoreTabKey,
-      /* eslint-enable no-unused-vars */
+      /* eslint-enable @typescript-eslint/no-unused-vars */
       preClassName,
       ...rest
     } = this.props;
@@ -547,7 +547,7 @@ export default class Editor extends React.Component<Props, State> {
     return (
       <div {...rest} style={{ ...styles.container, ...style }}>
         <textarea
-          ref={c => (this._input = c)}
+          ref={(c) => (this._input = c)}
           style={{
             ...styles.editor,
             ...styles.textarea,
@@ -640,4 +640,4 @@ const styles = {
     wordBreak: 'keep-all',
     overflowWrap: 'break-word',
   },
-};
+} as const;
