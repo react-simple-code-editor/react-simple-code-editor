@@ -22,7 +22,8 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
-    "lib/"
+    "lib/index.js",
+    "lib/index.d.ts"
   ],
   "repository": {
     "type": "git",
