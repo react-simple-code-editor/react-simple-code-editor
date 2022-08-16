@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+type Padding<T> = T | { top?: T; right?: T; bottom?: T; left?: T };
+
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   // Props for the component
   value: string;
@@ -8,13 +10,12 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   tabSize: number;
   insertSpaces: boolean;
   ignoreTabKey: boolean;
-  padding: number | string;
+  padding: Padding<number | string>;
   style?: React.CSSProperties;
 
   // Props for the textarea
   textareaId?: string;
   textareaClassName?: string;
-  textareaStyle?: React.CSSProperties;
   autoFocus?: boolean;
   disabled?: boolean;
   form?: string;
@@ -32,7 +33,6 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
 
   // Props for the hightlighted code’s pre element
   preClassName?: string;
-  preStyle?: React.CSSProperties;
 };
 
 type State = {
@@ -516,7 +516,6 @@ export default class Editor extends React.Component<Props, State> {
       highlight,
       textareaId,
       textareaClassName,
-      textareaStyle,
       autoFocus,
       disabled,
       form,
@@ -538,15 +537,14 @@ export default class Editor extends React.Component<Props, State> {
       ignoreTabKey,
       /* eslint-enable @typescript-eslint/no-unused-vars */
       preClassName,
-      preStyle,
       ...rest
     } = this.props;
 
     const contentStyle = {
-      paddingTop: padding,
-      paddingRight: padding,
-      paddingBottom: padding,
-      paddingLeft: padding,
+      paddingTop: typeof padding === 'object' ? padding.top : padding,
+      paddingRight: typeof padding === 'object' ? padding.right : padding,
+      paddingBottom: typeof padding === 'object' ? padding.bottom : padding,
+      paddingLeft: typeof padding === 'object' ? padding.left : padding,
     };
 
     const highlighted = highlight(value);
@@ -556,12 +554,7 @@ export default class Editor extends React.Component<Props, State> {
         <pre
           className={preClassName}
           aria-hidden="true"
-          style={{
-            ...styles.editor,
-            ...styles.highlight,
-            ...contentStyle,
-            ...(preStyle ?? {}}
-          }}
+          style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
           {...(typeof highlighted === 'string'
             ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
             : { children: highlighted })}
@@ -572,7 +565,6 @@ export default class Editor extends React.Component<Props, State> {
             ...styles.editor,
             ...styles.textarea,
             ...contentStyle,
-            ...(textareaStyle ?? {}}
           }}
           className={
             className + (textareaClassName ? ` ${textareaClassName}` : '')
