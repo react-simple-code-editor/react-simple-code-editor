@@ -14,6 +14,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   // Props for the textarea
   textareaId?: string;
   textareaClassName?: string;
+  textareaStyle?: React.CSSProperties;
   autoFocus?: boolean;
   disabled?: boolean;
   form?: string;
@@ -31,6 +32,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
 
   // Props for the hightlighted code’s pre element
   preClassName?: string;
+  preStyle?: React.CSSProperties;
 };
 
 type State = {
@@ -514,6 +516,7 @@ export default class Editor extends React.Component<Props, State> {
       highlight,
       textareaId,
       textareaClassName,
+      textareaStyle,
       autoFocus,
       disabled,
       form,
@@ -535,6 +538,7 @@ export default class Editor extends React.Component<Props, State> {
       ignoreTabKey,
       /* eslint-enable @typescript-eslint/no-unused-vars */
       preClassName,
+      preStyle,
       ...rest
     } = this.props;
 
@@ -552,7 +556,12 @@ export default class Editor extends React.Component<Props, State> {
         <pre
           className={preClassName}
           aria-hidden="true"
-          style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
+          style={{
+            ...styles.editor,
+            ...styles.highlight,
+            ...contentStyle,
+            ...(preStyle ?? {}}
+          }}
           {...(typeof highlighted === 'string'
             ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
             : { children: highlighted })}
@@ -563,6 +572,7 @@ export default class Editor extends React.Component<Props, State> {
             ...styles.editor,
             ...styles.textarea,
             ...contentStyle,
+            ...(textareaStyle ?? {}}
           }}
           className={
             className + (textareaClassName ? ` ${textareaClassName}` : '')
