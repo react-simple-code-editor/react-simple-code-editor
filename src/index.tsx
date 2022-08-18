@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+type Padding<T> = T | { top?: T; right?: T; bottom?: T; left?: T };
+
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   // Props for the component
   value: string;
@@ -8,7 +10,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   tabSize: number;
   insertSpaces: boolean;
   ignoreTabKey: boolean;
-  padding: number | string;
+  padding: Padding<number | string>;
   style?: React.CSSProperties;
 
   // Props for the textarea
@@ -539,10 +541,10 @@ export default class Editor extends React.Component<Props, State> {
     } = this.props;
 
     const contentStyle = {
-      paddingTop: padding,
-      paddingRight: padding,
-      paddingBottom: padding,
-      paddingLeft: padding,
+      paddingTop: typeof padding === 'object' ? padding.top : padding,
+      paddingRight: typeof padding === 'object' ? padding.right : padding,
+      paddingBottom: typeof padding === 'object' ? padding.bottom : padding,
+      paddingLeft: typeof padding === 'object' ? padding.left : padding,
     };
 
     const highlighted = highlight(value);
