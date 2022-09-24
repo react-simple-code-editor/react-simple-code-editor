@@ -1,6 +1,6 @@
-/* global global */
-
 import * as React from 'react';
+
+type Padding<T> = T | { top?: T; right?: T; bottom?: T; left?: T };
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   // Props for the component
@@ -10,7 +10,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   tabSize: number;
   insertSpaces: boolean;
   ignoreTabKey: boolean;
-  padding: number | string;
+  padding: Padding<number | string>;
   style?: React.CSSProperties;
 
   // Props for the textarea
@@ -65,9 +65,14 @@ const KEYCODE_ESCAPE = 27;
 const HISTORY_LIMIT = 100;
 const HISTORY_TIME_GAP = 3000;
 
-const isWindows = 'navigator' in global && /Win/i.test(navigator.platform);
+const isWindows =
+  typeof window !== 'undefined' &&
+  'navigator' in window &&
+  /Win/i.test(navigator.platform);
 const isMacLike =
-  'navigator' in global && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+  typeof window !== 'undefined' &&
+  'navigator' in window &&
+  /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 
 const className = 'npm__react-simple-code-editor__textarea';
 
@@ -536,16 +541,24 @@ export default class Editor extends React.Component<Props, State> {
     } = this.props;
 
     const contentStyle = {
-      paddingTop: padding,
-      paddingRight: padding,
-      paddingBottom: padding,
-      paddingLeft: padding,
+      paddingTop: typeof padding === 'object' ? padding.top : padding,
+      paddingRight: typeof padding === 'object' ? padding.right : padding,
+      paddingBottom: typeof padding === 'object' ? padding.bottom : padding,
+      paddingLeft: typeof padding === 'object' ? padding.left : padding,
     };
 
     const highlighted = highlight(value);
 
     return (
       <div {...rest} style={{ ...styles.container, ...style }}>
+        <pre
+          className={preClassName}
+          aria-hidden="true"
+          style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
+          {...(typeof highlighted === 'string'
+            ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
+            : { children: highlighted })}
+        />
         <textarea
           ref={(c) => (this._input = c)}
           style={{
@@ -578,14 +591,6 @@ export default class Editor extends React.Component<Props, State> {
           autoCorrect="off"
           spellCheck={false}
           data-gramm={false}
-        />
-        <pre
-          className={preClassName}
-          aria-hidden="true"
-          style={{ ...styles.editor, ...styles.highlight, ...contentStyle }}
-          {...(typeof highlighted === 'string'
-            ? { dangerouslySetInnerHTML: { __html: highlighted + '<br />' } }
-            : { children: highlighted })}
         />
         {/* eslint-disable-next-line react/no-danger */}
         <style dangerouslySetInnerHTML={{ __html: cssText }} />
