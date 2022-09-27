@@ -42,7 +42,7 @@ class App extends React.Component<{}, State> {
           <p>A simple no-frills code editor with syntax highlighting.</p>
           <a
             className="button"
-            href="https://github.com/satya164/react-simple-code-editor"
+            href="https://github.com/react-simple-code-editor/react-simple-code-editor"
           >
             GitHub
           </a>

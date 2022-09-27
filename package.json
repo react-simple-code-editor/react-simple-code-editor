@@ -27,7 +27,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/satya164/react-simple-code-editor.git"
+    "url": "git+https://github.com/react-simple-code-editor/react-simple-code-editor.git"
   },
   "author": "Satyajit Sahoo <satyajit.happy@gmail.com> (https://github.com/satya164/)",
   "license": "MIT",
