@@ -593,7 +593,7 @@ export default class Editor extends React.Component<Props, State> {
           data-gramm={false}
         />
         {/* eslint-disable-next-line react/no-danger */}
-        <style type="text/css" dangerouslySetInnerHTML={{ __html: cssText }} />
+        <style dangerouslySetInnerHTML={{ __html: cssText }} />
       </div>
     );
   }
