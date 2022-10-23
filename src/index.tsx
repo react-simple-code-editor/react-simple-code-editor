@@ -50,9 +50,6 @@ type History = {
   offset: number;
 };
 
-const KEYCODE_ENTER = 13;
-const KEYCODE_TAB = 9;
-const KEYCODE_BACKSPACE = 8;
 const KEYCODE_Y = 89;
 const KEYCODE_Z = 90;
 const KEYCODE_M = 77;
@@ -60,7 +57,6 @@ const KEYCODE_PARENS = 57;
 const KEYCODE_BRACKETS = 219;
 const KEYCODE_QUOTE = 222;
 const KEYCODE_BACK_QUOTE = 192;
-const KEYCODE_ESCAPE = 27;
 
 const HISTORY_LIMIT = 100;
 const HISTORY_TIME_GAP = 3000;
@@ -260,7 +256,7 @@ export default class Editor extends React.Component<Props, State> {
       }
     }
 
-    if (e.keyCode === KEYCODE_ESCAPE) {
+    if (e.key === 'Escape') {
       e.currentTarget.blur();
     }
 
@@ -268,7 +264,7 @@ export default class Editor extends React.Component<Props, State> {
 
     const tabCharacter = (insertSpaces ? ' ' : '\t').repeat(tabSize);
 
-    if (e.keyCode === KEYCODE_TAB && !ignoreTabKey && this.state.capture) {
+    if (e.key === 'Tab' && !ignoreTabKey && this.state.capture) {
       // Prevent focus change
       e.preventDefault();
 
@@ -348,7 +344,7 @@ export default class Editor extends React.Component<Props, State> {
           selectionEnd: updatedSelection,
         });
       }
-    } else if (e.keyCode === KEYCODE_BACKSPACE) {
+    } else if (e.key === 'Backspace') {
       const hasSelection = selectionStart !== selectionEnd;
       const textBeforeCaret = value.substring(0, selectionStart);
 
@@ -368,7 +364,7 @@ export default class Editor extends React.Component<Props, State> {
           selectionEnd: updatedSelection,
         });
       }
-    } else if (e.keyCode === KEYCODE_ENTER) {
+    } else if (e.key === 'Enter') {
       // Ignore selections
       if (selectionStart === selectionEnd) {
         // Get the current line
