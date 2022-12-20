@@ -221,13 +221,24 @@ export default class Editor extends React.Component<Props, State> {
 
   private _undoEdit = () => {
     const { stack, offset } = this._history;
-
     // Get the previous edit
     const record = stack[offset - 1];
 
+    // Get the current record
+    const current = stack[offset];
+    let selectionStart = 0,
+      selectionEnd = 0;
+
+    // Get the diff
+    if (current?.value?.length && record?.value?.length) {
+      const diff = current.value.length - record.value.length;
+      selectionStart = current.selectionStart - diff;
+      selectionEnd = current.selectionEnd - diff;
+    }
+
     if (record) {
       // Apply the changes and update the offset
-      this._updateInput(record);
+      this._updateInput({ ...record, selectionStart, selectionEnd });
       this._history.offset = Math.max(offset - 1, 0);
     }
   };
