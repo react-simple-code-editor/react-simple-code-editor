@@ -13,7 +13,7 @@
     "preprepare": "del lib/",
     "prepare": "tsc --project tsconfig.build.json",
     "example": "parcel example/index.html",
-    "gh-pages": "git branch -D gh-pages; git checkout -b gh-pages && rm -rf dist/ && parcel build example/App.js && git add -f dist/ && git commit -nm 'Publish website' && git push -fu origin gh-pages; git checkout @{-1}",
+    "gh-pages": "git branch -D gh-pages; git checkout -b gh-pages && rm -rf dist/ && parcel build example/App.tsx && git add -f dist/ && git commit -nm 'Publish website' && git push -fu origin gh-pages; git checkout @{-1}",
     "release": "release-it"
   },
   "publishConfig": {
