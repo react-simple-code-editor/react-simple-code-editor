@@ -84,7 +84,7 @@ The editor accepts all the props accepted by `textarea`. In addition, you can pa
 
 ## Demo
 
-[satya164.github.io/react-simple-code-editor](https://satya164.github.io/react-simple-code-editor)
+[react-simple-code-editor.github.io/react-simple-code-editor](https://react-simple-code-editor.github.io/react-simple-code-editor/)
 
 ## How it works
 
