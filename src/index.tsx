@@ -504,6 +504,10 @@ export default class Editor extends React.Component<Props, State> {
     this._history = session.history;
   }
 
+  get textarea() {
+    return this._input;
+  }
+
   render() {
     const {
       value,
