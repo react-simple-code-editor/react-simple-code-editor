@@ -16,6 +16,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   // Props for the textarea
   textareaId?: string;
   textareaClassName?: string;
+  textareaTitle?: string;
   autoFocus?: boolean;
   disabled?: boolean;
   form?: string;
@@ -512,6 +513,7 @@ export default class Editor extends React.Component<Props, State> {
       highlight,
       textareaId,
       textareaClassName,
+      textareaTitle,
       autoFocus,
       disabled,
       form,
@@ -566,6 +568,7 @@ export default class Editor extends React.Component<Props, State> {
             className + (textareaClassName ? ` ${textareaClassName}` : '')
           }
           id={textareaId}
+          title={textareaTitle}
           value={value}
           onChange={this._handleChange}
           onKeyDown={this._handleKeyDown}

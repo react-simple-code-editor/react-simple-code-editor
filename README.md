@@ -53,8 +53,8 @@ function App() {
   return (
     <Editor
       value={code}
-      onValueChange={code => setCode(code)}
-      highlight={code => highlight(code, languages.js)}
+      onValueChange={(code) => setCode(code)}
+      highlight={(code) => highlight(code, languages.js)}
       padding={10}
       style={{
         fontFamily: '"Fira code", "Fira Mono", monospace',
@@ -80,6 +80,7 @@ The editor accepts all the props accepted by `textarea`. In addition, you can pa
 - `padding` (`number`): Optional padding for code. Default: `0`.
 - `textareaId` (`string`): An ID for the underlying `textarea`, can be useful for setting a `label`.
 - `textareaClassName` (`string`): A className for the underlying `textarea`, can be useful for more precise control of its styles.
+- `textareaTitle` (`string`): A string, used to identify the form control, so that user agents, including assistive technology, can speak the title attribute.
 - `preClassName` (`string`): A className for the underlying `pre`, can be useful for more precise control of its styles.
 
 ## Demo

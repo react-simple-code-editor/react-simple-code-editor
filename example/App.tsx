@@ -54,6 +54,7 @@ class App extends React.Component<{}, State> {
               highlight={(code) => highlight(code, languages.jsx!, 'jsx')}
               padding={10}
               className="container__editor"
+              textareaTitle="Type code in live code editor here"
             />
           </div>
         </div>
