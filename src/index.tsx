@@ -1,25 +1,17 @@
-import type {
-  CSSProperties,
-  FocusEventHandler,
-  HTMLAttributes,
-  KeyboardEventHandler,
-  MouseEventHandler,
-  ReactNode,
-} from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 
 type Padding<T> = T | { top?: T; right?: T; bottom?: T; left?: T };
 
-type Props = HTMLAttributes<HTMLDivElement> & {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   // Props for the component
   value: string;
   onValueChange: (value: string) => void;
-  highlight: (value: string) => string | ReactNode;
+  highlight: (value: string) => string | React.ReactNode;
   tabSize: number;
   insertSpaces: boolean;
   ignoreTabKey: boolean;
   padding: Padding<number | string>;
-  style?: CSSProperties;
+  style?: React.CSSProperties;
 
   // Props for the textarea
   textareaId?: string;
@@ -33,11 +25,11 @@ type Props = HTMLAttributes<HTMLDivElement> & {
   placeholder?: string;
   readOnly?: boolean;
   required?: boolean;
-  onClick?: MouseEventHandler<HTMLTextAreaElement>;
-  onFocus?: FocusEventHandler<HTMLTextAreaElement>;
-  onBlur?: FocusEventHandler<HTMLTextAreaElement>;
-  onKeyUp?: KeyboardEventHandler<HTMLTextAreaElement>;
-  onKeyDown?: KeyboardEventHandler<HTMLTextAreaElement>;
+  onClick?: React.MouseEventHandler<HTMLTextAreaElement>;
+  onFocus?: React.FocusEventHandler<HTMLTextAreaElement>;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
+  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
 
   // Props for the hightlighted code’s pre element
   preClassName?: string;
@@ -115,9 +107,9 @@ export default function Editor({
   padding = 0,
   ...rest
 }: Props) {
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-  const [capture, setCapture] = useState(true);
-  const history = useRef<History>({ stack: [], offset: -1 });
+  const inputRef = React.useRef<HTMLTextAreaElement>(null);
+  const [capture, setCapture] = React.useState(true);
+  const history = React.useRef<History>({ stack: [], offset: -1 });
 
   const {
     value,
@@ -155,7 +147,7 @@ export default function Editor({
 
   const highlighted = highlight(value);
 
-  const recordChange = useCallback(
+  const recordChange = React.useCallback(
     (record: Record, overwrite: boolean = false) => {
       const h = history.current;
 
@@ -216,7 +208,7 @@ export default function Editor({
     []
   );
 
-  const updateInput = useCallback(
+  const updateInput = React.useCallback(
     (record: Record) => {
       if (!inputRef.current) {
         return;
@@ -231,7 +223,7 @@ export default function Editor({
     [inputRef, onValueChange]
   );
 
-  const applyEdits = useCallback(
+  const applyEdits = React.useCallback(
     (record: Record) => {
       if (!inputRef.current || !history.current) {
         return;
@@ -253,7 +245,7 @@ export default function Editor({
     [inputRef, recordChange, updateInput]
   );
 
-  const undoEdit = useCallback(() => {
+  const undoEdit = React.useCallback(() => {
     if (!history.current) {
       return;
     }
@@ -270,7 +262,7 @@ export default function Editor({
     }
   }, [updateInput]);
 
-  const redoEdit = useCallback(() => {
+  const redoEdit = React.useCallback(() => {
     if (!history.current) {
       return;
     }
@@ -287,7 +279,7 @@ export default function Editor({
     }
   }, [updateInput]);
 
-  const handleKeyDown = useCallback(
+  const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (e.key === 'Escape') {
         e.currentTarget.blur();
@@ -513,7 +505,7 @@ export default function Editor({
     ]
   );
 
-  const handleChange = useCallback(
+  const handleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const { value, selectionStart, selectionEnd } = e.currentTarget;
 
@@ -531,7 +523,7 @@ export default function Editor({
     [onValueChange, recordChange]
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!inputRef.current) {
       return;
     }
