@@ -7,10 +7,10 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   value: string;
   onValueChange: (value: string) => void;
   highlight: (value: string) => string | React.ReactNode;
-  tabSize: number;
-  insertSpaces: boolean;
-  ignoreTabKey: boolean;
-  padding: Padding<number | string>;
+  tabSize?: number;
+  insertSpaces?: boolean;
+  ignoreTabKey?: boolean;
+  padding?: Padding<number | string>;
   style?: React.CSSProperties;
 
   // Props for the textarea
