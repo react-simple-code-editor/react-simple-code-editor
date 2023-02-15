@@ -1,19 +1,25 @@
-import * as React from 'react';
+import type {
+  CSSProperties,
+  FocusEventHandler,
+  HTMLAttributes,
+  KeyboardEventHandler,
+  MouseEventHandler,
+  ReactNode,
+} from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 type Padding<T> = T | { top?: T; right?: T; bottom?: T; left?: T };
 
-type Props = React.HTMLAttributes<HTMLDivElement> & {
+type Props = HTMLAttributes<HTMLDivElement> & {
   // Props for the component
   value: string;
   onValueChange: (value: string) => void;
-  highlight: (value: string) => string | React.ReactNode;
+  highlight: (value: string) => string | ReactNode;
   tabSize: number;
   insertSpaces: boolean;
   ignoreTabKey: boolean;
   padding: Padding<number | string>;
-  style?: React.CSSProperties;
-  inputRef: React.RefObject<HTMLTextAreaElement>;
+  style?: CSSProperties;
 
   // Props for the textarea
   textareaId?: string;
@@ -27,11 +33,11 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   placeholder?: string;
   readOnly?: boolean;
   required?: boolean;
-  onClick?: React.MouseEventHandler<HTMLTextAreaElement>;
-  onFocus?: React.FocusEventHandler<HTMLTextAreaElement>;
-  onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
-  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>;
-  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  onClick?: MouseEventHandler<HTMLTextAreaElement>;
+  onFocus?: FocusEventHandler<HTMLTextAreaElement>;
+  onBlur?: FocusEventHandler<HTMLTextAreaElement>;
+  onKeyUp?: KeyboardEventHandler<HTMLTextAreaElement>;
+  onKeyDown?: KeyboardEventHandler<HTMLTextAreaElement>;
 
   // Props for the hightlighted code’s pre element
   preClassName?: string;
@@ -109,12 +115,12 @@ export default function Editor({
   padding = 0,
   ...rest
 }: Props) {
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [capture, setCapture] = useState(true);
   const history = useRef<History>({ stack: [], offset: -1 });
 
   const {
     value,
-    inputRef,
     style,
     highlight,
     textareaId,
