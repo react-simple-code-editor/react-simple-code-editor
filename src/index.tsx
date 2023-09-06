@@ -587,7 +587,7 @@ export default class Editor extends React.Component<Props, State> {
           autoCapitalize="off"
           autoComplete="off"
           autoCorrect="off"
-          spellCheck={spellCheck}
+          spellCheck={spellCheck ?? false}
           data-gramm={false}
         />
         {/* eslint-disable-next-line react/no-danger */}
