@@ -25,6 +25,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   placeholder?: string;
   readOnly?: boolean;
   required?: boolean;
+  spellCheck?: boolean;
   onClick?: React.MouseEventHandler<HTMLTextAreaElement>;
   onFocus?: React.FocusEventHandler<HTMLTextAreaElement>;
   onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
@@ -521,6 +522,7 @@ export default class Editor extends React.Component<Props, State> {
       placeholder,
       readOnly,
       required,
+      spellCheck,
       onClick,
       onFocus,
       onBlur,
@@ -585,7 +587,7 @@ export default class Editor extends React.Component<Props, State> {
           autoCapitalize="off"
           autoComplete="off"
           autoCorrect="off"
-          spellCheck={false}
+          spellCheck={spellCheck ?? false}
           data-gramm={false}
         />
         {/* eslint-disable-next-line react/no-danger */}

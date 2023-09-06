@@ -28,6 +28,7 @@ declare module 'react-simple-code-editor' {
       placeholder?: string;
       readOnly?: boolean;
       required?: boolean;
+      spellCheck?: boolean;
       onClick?: (e: React.MouseEvent<HTMLTextAreaElement>) => void;
       onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
       onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
