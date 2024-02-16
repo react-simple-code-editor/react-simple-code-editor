@@ -19,6 +19,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   autoFocus?: boolean;
   disabled?: boolean;
   form?: string;
+  label?: string;
   maxLength?: number;
   minLength?: number;
   name?: string;
@@ -515,6 +516,7 @@ export default class Editor extends React.Component<Props, State> {
       autoFocus,
       disabled,
       form,
+      label,
       maxLength,
       minLength,
       name,
@@ -557,6 +559,7 @@ export default class Editor extends React.Component<Props, State> {
         />
         <textarea
           ref={(c) => (this._input = c)}
+          aria-label={label || 'Code Editor'}
           style={{
             ...styles.editor,
             ...styles.textarea,
