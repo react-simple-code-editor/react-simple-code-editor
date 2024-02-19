@@ -30,6 +30,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
   onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  rows?: number;
 
   // Props for the hightlighted code’s pre element
   preClassName?: string;
@@ -533,6 +534,7 @@ export default class Editor extends React.Component<Props, State> {
       ignoreTabKey,
       /* eslint-enable @typescript-eslint/no-unused-vars */
       preClassName,
+      rows,
       ...rest
     } = this.props;
 
@@ -587,6 +589,7 @@ export default class Editor extends React.Component<Props, State> {
           autoCorrect="off"
           spellCheck={false}
           data-gramm={false}
+          rows={rows}
         />
         {/* eslint-disable-next-line react/no-danger */}
         <style dangerouslySetInnerHTML={{ __html: cssText }} />
