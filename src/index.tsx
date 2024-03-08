@@ -504,6 +504,10 @@ export default class Editor extends React.Component<Props, State> {
     this._history = session.history;
   }
 
+  focus() {
+    this._input?.focus();
+  }
+
   render() {
     const {
       value,
