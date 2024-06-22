@@ -13,6 +13,7 @@ declare module 'react-simple-code-editor' {
       tabSize?: number;
       insertSpaces?: boolean;
       ignoreTabKey?: boolean;
+      autoBullets?: boolean;
       padding?: number | string;
       style?: React.CSSProperties;
 

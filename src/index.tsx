@@ -11,6 +11,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   insertSpaces: boolean;
   ignoreTabKey: boolean;
   padding: Padding<number | string>;
+  autoBullets: boolean;
   style?: React.CSSProperties;
 
   // Props for the textarea
@@ -69,6 +70,9 @@ const isMacLike =
   typeof window !== 'undefined' &&
   'navigator' in window &&
   /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+
+const AUTOBULLET_PATTERN = /(\n|^)\s*?-$/;
+const HASBULLET_PATTERN = /^\s*?•\s*/;
 
 const className = 'npm__react-simple-code-editor__textarea';
 
@@ -131,7 +135,7 @@ export default class Editor extends React.Component<Props, State> {
     });
   };
 
-  private _getLines = (text: string, position: number) =>
+  private _getLines = (text: string, position: number): string[] =>
     text.substring(0, position).split('\n');
 
   private _recordChange = (record: Record, overwrite: boolean = false) => {
@@ -246,7 +250,8 @@ export default class Editor extends React.Component<Props, State> {
   };
 
   private _handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const { tabSize, insertSpaces, ignoreTabKey, onKeyDown } = this.props;
+    const { tabSize, insertSpaces, ignoreTabKey, onKeyDown, autoBullets } =
+      this.props;
 
     if (onKeyDown) {
       onKeyDown(e);
@@ -268,9 +273,17 @@ export default class Editor extends React.Component<Props, State> {
       // Prevent focus change
       e.preventDefault();
 
+      const linesBeforeCaret = this._getLines(value, selectionStart);
+
+      // Check to see if the line is bullet pointed.
+      // If it is then we always treat tab as indenting the line
+      const currentLineBeforeCaret =
+        linesBeforeCaret[linesBeforeCaret.length - 1];
+      const isBullet =
+        autoBullets && currentLineBeforeCaret?.match(HASBULLET_PATTERN);
+
       if (e.shiftKey) {
         // Unindent selected lines
-        const linesBeforeCaret = this._getLines(value, selectionStart);
         const startLine = linesBeforeCaret.length - 1;
         const endLine = this._getLines(value, selectionEnd).length - 1;
         const nextValue = value
@@ -302,9 +315,8 @@ export default class Editor extends React.Component<Props, State> {
             selectionEnd: selectionEnd - (value.length - nextValue.length),
           });
         }
-      } else if (selectionStart !== selectionEnd) {
+      } else if (isBullet || selectionStart !== selectionEnd) {
         // Indent selected lines
-        const linesBeforeCaret = this._getLines(value, selectionStart);
         const startLine = linesBeforeCaret.length - 1;
         const endLine = this._getLines(value, selectionEnd).length - 1;
         const startLineText = linesBeforeCaret[startLine];
@@ -369,24 +381,54 @@ export default class Editor extends React.Component<Props, State> {
       if (selectionStart === selectionEnd) {
         // Get the current line
         const line = this._getLines(value, selectionStart).pop();
-        const matches = line?.match(/^\s+/);
 
-        if (matches?.[0]) {
+        let newLine = '';
+
+        const matchesIndentation = line?.match(/^\s+/);
+
+        if (matchesIndentation?.[0]) {
+          // Preserve indentation on inserting a new line
+          newLine = matchesIndentation[0];
+        }
+
+        // If the previous line was a bullet point,
+        // we're going to make this line a bullet point too
+        if (line?.match(HASBULLET_PATTERN)) {
+          newLine += '• ';
+        }
+
+        if (newLine) {
           e.preventDefault();
 
-          // Preserve indentation on inserting a new line
-          const indent = '\n' + matches[0];
-          const updatedSelection = selectionStart + indent.length;
+          newLine = '\n' + newLine;
+
+          const updatedSelection = selectionStart + newLine.length;
 
           this._applyEdits({
             // Insert indentation character at caret
             value:
               value.substring(0, selectionStart) +
-              indent +
+              newLine +
               value.substring(selectionEnd),
             // Update caret position
             selectionStart: updatedSelection,
             selectionEnd: updatedSelection,
+          });
+        }
+      }
+    } else if (e.key === ' ') {
+      // Ignore selections
+      if (autoBullets && selectionStart === selectionEnd) {
+        const beforeCursor = value.substring(0, selectionStart);
+
+        if (beforeCursor.match(AUTOBULLET_PATTERN)) {
+          this._applyEdits({
+            value:
+              value.substring(0, selectionStart - 1) +
+              '•' +
+              value.substring(selectionStart),
+            selectionStart: selectionStart,
+            selectionEnd: selectionEnd,
           });
         }
       }
@@ -531,6 +573,7 @@ export default class Editor extends React.Component<Props, State> {
       tabSize,
       insertSpaces,
       ignoreTabKey,
+      autoBullets,
       /* eslint-enable @typescript-eslint/no-unused-vars */
       preClassName,
       ...rest
