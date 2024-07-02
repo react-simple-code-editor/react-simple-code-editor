@@ -1,51 +1,56 @@
 declare module 'react-simple-code-editor' {
   import * as React from 'react';
-
-  export default class extends React.Component<
-    React.DetailedHTMLProps<
-      React.HTMLAttributes<HTMLDivElement>,
-      HTMLDivElement
-    > & {
-      // Props for the component
+  declare type Padding<T> =
+    | T
+    | {
+        top?: T;
+        right?: T;
+        bottom?: T;
+        left?: T;
+      };
+  declare type Record = {
+    value: string;
+    selectionStart: number;
+    selectionEnd: number;
+  };
+  declare type History = {
+    stack: (Record & {
+      timestamp: number;
+    })[];
+    offset: number;
+  };
+  declare const Editor: React.ForwardRefExoticComponent<
+    React.HTMLAttributes<HTMLDivElement> & {
       value: string;
       onValueChange: (value: string) => void;
       highlight: (value: string) => string | React.ReactNode;
-      tabSize?: number;
-      insertSpaces?: boolean;
-      ignoreTabKey?: boolean;
-      padding?: number | string;
-      style?: React.CSSProperties;
-
-      // Props for the textarea
-      textareaId?: string;
-      textareaClassName?: string;
-      autoFocus?: boolean;
-      disabled?: boolean;
-      form?: string;
-      maxLength?: number;
-      minLength?: number;
-      name?: string;
-      placeholder?: string;
-      readOnly?: boolean;
-      required?: boolean;
-      onClick?: (e: React.MouseEvent<HTMLTextAreaElement>) => void;
-      onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
-      onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
-      onKeyUp?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-      onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-      preClassName?: string;
-    }
-  > {
-    session: {
-      history: {
-        stack: {
-          value: string;
-          selectionStart: number;
-          selectionEnd: number;
-          timestamp: number;
-        }[];
-        offset: number;
-      };
-    };
-  }
+      tabSize?: number | undefined;
+      insertSpaces?: boolean | undefined;
+      ignoreTabKey?: boolean | undefined;
+      padding: Padding<number | string>;
+      style?: React.CSSProperties | undefined;
+      textareaId?: string | undefined;
+      textareaClassName?: string | undefined;
+      autoFocus?: boolean | undefined;
+      disabled?: boolean | undefined;
+      form?: string | undefined;
+      maxLength?: number | undefined;
+      minLength?: number | undefined;
+      name?: string | undefined;
+      placeholder?: string | undefined;
+      readOnly?: boolean | undefined;
+      required?: boolean | undefined;
+      onClick?: React.MouseEventHandler<HTMLTextAreaElement> | undefined;
+      onFocus?: React.FocusEventHandler<HTMLTextAreaElement> | undefined;
+      onBlur?: React.FocusEventHandler<HTMLTextAreaElement> | undefined;
+      onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement> | undefined;
+      onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement> | undefined;
+      preClassName?: string | undefined;
+    } & React.RefAttributes<{
+        session: {
+          history: History;
+        };
+      }>
+  >;
+  export default Editor;
 }
