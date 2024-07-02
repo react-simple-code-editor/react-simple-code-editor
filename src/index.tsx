@@ -4,32 +4,32 @@ type Padding<T> = T | { top?: T; right?: T; bottom?: T; left?: T };
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   // Props for the component
-  value: string;
-  onValueChange: (value: string) => void;
   highlight: (value: string) => string | React.ReactNode;
-  tabSize?: number;
-  insertSpaces?: boolean;
   ignoreTabKey?: boolean;
+  insertSpaces?: boolean;
+  onValueChange: (value: string) => void;
   padding: Padding<number | string>;
   style?: React.CSSProperties;
+  tabSize?: number;
+  value: string;
 
   // Props for the textarea
-  textareaId?: string;
-  textareaClassName?: string;
   autoFocus?: boolean;
   disabled?: boolean;
   form?: string;
   maxLength?: number;
   minLength?: number;
   name?: string;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
+  onClick?: React.MouseEventHandler<HTMLTextAreaElement>;
+  onFocus?: React.FocusEventHandler<HTMLTextAreaElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>;
   placeholder?: string;
   readOnly?: boolean;
   required?: boolean;
-  onClick?: React.MouseEventHandler<HTMLTextAreaElement>;
-  onFocus?: React.FocusEventHandler<HTMLTextAreaElement>;
-  onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
-  onKeyUp?: React.KeyboardEventHandler<HTMLTextAreaElement>;
-  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  textareaClassName?: string;
+  textareaId?: string;
 
   // Props for the hightlighted code’s pre element
   preClassName?: string;
