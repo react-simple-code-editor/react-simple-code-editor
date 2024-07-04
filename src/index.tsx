@@ -8,7 +8,7 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   ignoreTabKey?: boolean;
   insertSpaces?: boolean;
   onValueChange: (value: string) => void;
-  padding: Padding<number | string>;
+  padding?: Padding<number | string>;
   style?: React.CSSProperties;
   tabSize?: number;
   value: string;
