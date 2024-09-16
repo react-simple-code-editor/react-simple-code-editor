@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 type Padding<T> = T | { top?: T; right?: T; bottom?: T; left?: T };
 
@@ -96,7 +96,7 @@ const cssText = /* CSS */ `
 }
 `;
 
-const Editor = React.forwardRef(function Editor(
+const Editor = forwardRef(function Editor(
   props: Props,
   ref: React.Ref<null | { session: { history: History } }>
 ) {
@@ -129,12 +129,12 @@ const Editor = React.forwardRef(function Editor(
     ...rest
   } = props;
 
-  const historyRef = React.useRef<History>({
+  const historyRef = useRef<History>({
     stack: [],
     offset: -1,
   });
-  const inputRef = React.useRef<HTMLTextAreaElement | null>(null);
-  const [capture, setCapture] = React.useState(true);
+  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const [capture, setCapture] = useState(true);
   const contentStyle = {
     paddingTop: typeof padding === 'object' ? padding.top : padding,
     paddingRight: typeof padding === 'object' ? padding.right : padding,
@@ -146,7 +146,7 @@ const Editor = React.forwardRef(function Editor(
   const getLines = (text: string, position: number) =>
     text.substring(0, position).split('\n');
 
-  const recordChange = React.useCallback(
+  const recordChange = useCallback(
     (record: Record, overwrite: boolean = false) => {
       const { stack, offset } = historyRef.current;
 
@@ -209,7 +209,7 @@ const Editor = React.forwardRef(function Editor(
     []
   );
 
-  const recordCurrentState = React.useCallback(() => {
+  const recordCurrentState = useCallback(() => {
     const input = inputRef.current;
 
     if (!input) return;
@@ -519,11 +519,11 @@ const Editor = React.forwardRef(function Editor(
     onValueChange(value);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     recordCurrentState();
   }, [recordCurrentState]);
 
-  React.useImperativeHandle(
+  useImperativeHandle(
     ref,
     () => {
       return {

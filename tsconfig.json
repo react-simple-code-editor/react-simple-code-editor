@@ -1,19 +1,21 @@
 {
   "compilerOptions": {
     "outDir": "lib",
-    "target": "es5",
-    "module": "commonjs",
+    "target": "ES2022",
+    "module": "NodeNext",
     "sourceMap": true,
     "declaration": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "importsNotUsedAsValues": "error",
     "isolatedModules": true,
-    "jsx": "react",
-    "lib": ["esnext", "dom"],
-    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "moduleResolution": "NodeNext",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
